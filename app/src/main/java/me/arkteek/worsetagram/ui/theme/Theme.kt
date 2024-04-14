@@ -17,35 +17,27 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-private val DarkColorScheme = darkColorScheme(
-  primary = Black,
-  secondary = PurpleGrey80,
-  tertiary = Pink80
-)
+private val DarkColorScheme =
+    darkColorScheme(primary = Black, secondary = PurpleGrey80, tertiary = Pink80)
 
-private val LightColorScheme = lightColorScheme(
-  primary = White,
-  secondary = PurpleGrey40,
-  tertiary = Pink40
-)
+private val LightColorScheme =
+    lightColorScheme(primary = White, secondary = PurpleGrey40, tertiary = Pink40)
 
 @Composable
 fun InstagramCloneTheme(
-  darkTheme: Boolean = isSystemInDarkTheme(),
-  dynamicColor: Boolean = true,
-  content: @Composable () -> Unit
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    dynamicColor: Boolean = true,
+    content: @Composable () -> Unit
 ) {
-  val colorScheme = when {
-    dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-      val context = LocalContext.current
-      if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(
-        context
-      )
-    }
-
-    darkTheme -> DarkColorScheme
-    else -> LightColorScheme
-  }
+  val colorScheme =
+      when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+          val context = LocalContext.current
+          if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+      }
 
   val view = LocalView.current
   val systemUiController = rememberSystemUiController()
@@ -55,29 +47,15 @@ fun InstagramCloneTheme(
       val window = (view.context as Activity).window
       if (darkTheme) {
         window.statusBarColor = 0xFF212121.toInt()
-        systemUiController.setSystemBarsColor(
-          color = Color(0xFF212121.toInt())
-        )
-        WindowCompat.getInsetsController(
-          window,
-          view
-        ).isAppearanceLightStatusBars = false
+        systemUiController.setSystemBarsColor(color = Color(0xFF212121.toInt()))
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
       } else {
         window.statusBarColor = Color.White.toArgb()
-        systemUiController.setSystemBarsColor(
-          color = Color.White
-        )
-        WindowCompat.getInsetsController(
-          window,
-          view
-        ).isAppearanceLightStatusBars = true
+        systemUiController.setSystemBarsColor(color = Color.White)
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
       }
     }
   }
 
-  MaterialTheme(
-    colorScheme = colorScheme,
-    typography = Typography,
-    content = content
-  )
+  MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
 }

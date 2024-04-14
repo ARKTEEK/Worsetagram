@@ -18,10 +18,7 @@ class MainActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
     setContent {
       InstagramCloneTheme {
-        Surface(
-          modifier = Modifier.fillMaxSize(),
-          color = MaterialTheme.colorScheme.background
-        ) {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
           Home()
         }
       }
@@ -29,11 +26,8 @@ class MainActivity : ComponentActivity() {
   }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-  InstagramCloneTheme {
-    Header()
-  }
+  InstagramCloneTheme { Header() }
 }
