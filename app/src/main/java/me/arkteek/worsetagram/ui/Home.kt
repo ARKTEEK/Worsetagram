@@ -306,14 +306,14 @@ fun Header() {
     }, actions = {
         IconButton(onClick = { }) {
             Icon(
-                painter = painterResource(R.drawable._025703_heart_icon),
+                painter = painterResource(R.drawable.ic_heart),
                 contentDescription = "Heart Icon",
                 modifier = Modifier.size(24.dp)
             )
         }
         IconButton(onClick = { }) {
             Icon(
-                painter = painterResource(R.drawable._959746_chat_communication_facebook_messenger_icon),
+                painter = painterResource(R.drawable.ic_chat),
                 contentDescription = "Messenges Icon",
                 modifier = Modifier.size(24.dp)
             )
@@ -424,7 +424,7 @@ fun BottomNavigationBar() {
             IconButton(onClick = { /* do something */ }) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
-                        painter = painterResource(R.drawable._912908791641180048),
+                        painter = painterResource(R.drawable.ic_home),
                         contentDescription = "Home Icon",
                         modifier = Modifier.size(25.dp)
                     )
@@ -457,7 +457,7 @@ fun BottomNavigationBar() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable._6977127916352314864510),
+                        painter = painterResource(R.drawable.ic_reels),
                         contentDescription = "Media Icon",
                         modifier = Modifier.size(28.dp)
                     )
