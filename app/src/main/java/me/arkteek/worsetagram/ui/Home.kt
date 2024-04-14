@@ -45,10 +45,105 @@ import me.arkteek.worsetagram.Post
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.ui.theme.InstagramCloneTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home() {
-    Scaffold(topBar = { Header() },
-        bottomBar = { BottomNavigationBar() }) { paddingValues ->
+    Scaffold(
+        topBar = {
+            TopAppBar(title = {
+                Text(
+                    "For you",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                )
+            }, actions = {
+                IconButton(onClick = { }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_heart),
+                        contentDescription = "Heart Icon",
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                IconButton(onClick = { }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_chat),
+                        contentDescription = "Messenges Icon",
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            })
+        },
+        bottomBar = {
+            BottomAppBar(containerColor = Color(0xFFFAFAFA))
+            {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                ) {
+                    // Create an icon button for home
+                    IconButton(onClick = { /* do something */ }) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_home),
+                                contentDescription = "Home Icon",
+                                modifier = Modifier.size(25.dp)
+                            )
+                        }
+                    }
+                    // Create an icon button for search
+                    IconButton(onClick = { /* do something */ }) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = painterResource(R.drawable.search_line_icon),
+                                contentDescription = "Search Icon",
+                                modifier = Modifier.size(25.dp)
+                            )
+                        }
+                    }
+                    // Create an icon button for add
+                    IconButton(onClick = { /* do something */ }) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = painterResource(R.drawable.plus_square_line_icon),
+                                contentDescription = "Add Icon",
+                                modifier = Modifier.size(25.dp)
+                            )
+                        }
+                    }
+                    // Create an icon button for media
+                    IconButton(onClick = { /* do something */ }) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_reels),
+                                contentDescription = "Media Icon",
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
+                    }
+                    // Create an icon button for profile picture
+                    IconButton(onClick = { /* do something */ }) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            AsyncImage(
+                                model = "https://i.imgur.com/qXqDyoe.png",
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(27.dp)
+                                    .clip(CircleShape)
+                                    .clickable(onClick = {}),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                    }
+                }
+            }
+
+        }) { paddingValues ->
 
         Column(
             modifier = Modifier
@@ -84,9 +179,42 @@ fun Home() {
 
                 }
 
-                PostSection(Post(description = "This is a dummy post", author = "petras", likes = 3700, comments = 39, images = listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg")))
-                PostSection(Post(description = "This is a dummy post", author = "petras", likes = 3700, comments = 39, images = listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg")))
-                PostSection(Post(description = "This is a dummy post", author = "petras", likes = 3700, comments = 39, images = listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg")))
+                PostSection(
+                    Post(
+                        description = "This is a dummy post",
+                        author = "petras",
+                        likes = 3700,
+                        comments = 39,
+                        images = listOf(
+                            "https://i.imgur.com/PEpAtBe.jpeg",
+                            "https://i.imgur.com/84p7L9H.jpeg"
+                        )
+                    )
+                )
+                PostSection(
+                    Post(
+                        description = "This is a dummy post",
+                        author = "petras",
+                        likes = 3700,
+                        comments = 39,
+                        images = listOf(
+                            "https://i.imgur.com/PEpAtBe.jpeg",
+                            "https://i.imgur.com/84p7L9H.jpeg"
+                        )
+                    )
+                )
+                PostSection(
+                    Post(
+                        description = "This is a dummy post",
+                        author = "petras",
+                        likes = 3700,
+                        comments = 39,
+                        images = listOf(
+                            "https://i.imgur.com/PEpAtBe.jpeg",
+                            "https://i.imgur.com/84p7L9H.jpeg"
+                        )
+                    )
+                )
             }
 
         }
@@ -293,34 +421,6 @@ fun ImageScrollWithTextOverlay(images: List<String>) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Header() {
-    TopAppBar(title = {
-        Text(
-            "For you",
-//            fontFamily = lobster,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-        )
-    }, actions = {
-        IconButton(onClick = { }) {
-            Icon(
-                painter = painterResource(R.drawable.ic_heart),
-                contentDescription = "Heart Icon",
-                modifier = Modifier.size(24.dp)
-            )
-        }
-        IconButton(onClick = { }) {
-            Icon(
-                painter = painterResource(R.drawable.ic_chat),
-                contentDescription = "Messenges Icon",
-                modifier = Modifier.size(24.dp)
-            )
-        }
-    })
-}
-
 @Composable
 fun YourStory(imageUrl: String, name: String) {
     Column(
@@ -386,16 +486,6 @@ fun Story(imageUrl: String, name: String) {
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun HomeAppBarPreview() {
-    InstagramCloneTheme {
-        Header()
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun HomePreview() {
@@ -409,77 +499,5 @@ fun HomePreview() {
 fun HomeDarkPreview() {
     InstagramCloneTheme(darkTheme = true) {
         Home()
-    }
-}
-
-@Composable
-fun BottomNavigationBar() {
-    BottomAppBar(containerColor = Color(0xFFFAFAFA))
-    {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-        ) {
-            // Create an icon button for home
-            IconButton(onClick = { /* do something */ }) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_home),
-                        contentDescription = "Home Icon",
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-            // Create an icon button for search
-            IconButton(onClick = { /* do something */ }) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        painter = painterResource(R.drawable.search_line_icon),
-                        contentDescription = "Search Icon",
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-            // Create an icon button for add
-            IconButton(onClick = { /* do something */ }) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        painter = painterResource(R.drawable.plus_square_line_icon),
-                        contentDescription = "Add Icon",
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-            // Create an icon button for media
-            IconButton(onClick = { /* do something */ }) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_reels),
-                        contentDescription = "Media Icon",
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-            }
-            // Create an icon button for profile picture
-            IconButton(onClick = { /* do something */ }) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    AsyncImage(
-                        model = "https://i.imgur.com/qXqDyoe.png",
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(27.dp)
-                            .clip(CircleShape)
-                            .clickable(onClick = {}),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
-        }
     }
 }
