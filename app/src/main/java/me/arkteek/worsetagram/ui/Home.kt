@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,17 +36,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.Post
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.ui.theme.InstagramCloneTheme
 
 @Composable
-fun Home() {
-  Scaffold(topBar = { Header() }, bottomBar = { BottomNavigationBar() }) { paddingValues ->
+fun Home(changePage: (String) -> Unit) {
+  Scaffold(topBar = { Header() }, bottomBar = { BottomNavigationBar(changePage) }) { paddingValues
+    ->
     Column(
         modifier =
             Modifier.padding(paddingValues).fillMaxSize().verticalScroll(rememberScrollState())) {
@@ -131,7 +129,6 @@ fun PostSection(post: Post) {
             }
           }
 
-      // Image / Video
       Row(
           modifier = Modifier.horizontalScroll(rememberScrollState()).fillMaxWidth(),
       ) {
@@ -140,7 +137,6 @@ fun PostSection(post: Post) {
 
       // Content (Reactions)
       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        // Create a row to hold the reaction icons
         Row {
           // Create an icon button for likes
           IconButton(onClick = {}) {
@@ -176,7 +172,6 @@ fun PostSection(post: Post) {
         }
       }
 
-      // Create a column to hold the likes, comments, and timestamp
       Column(modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 1.dp, bottom = 4.dp)) {
         // Display the number of likes
         Row {
@@ -208,7 +203,7 @@ fun PostSection(post: Post) {
 }
 
 @Composable
-fun ImageScrollWithTextOverlay(images: List<String>) {
+private fun ImageScrollWithTextOverlay(images: List<String>) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
 
   images.forEachIndexed { index, imageUrl ->
@@ -229,7 +224,7 @@ fun ImageScrollWithTextOverlay(images: List<String>) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header() {
+private fun Header() {
   TopAppBar(
       title = {
         Text(
@@ -255,7 +250,7 @@ fun Header() {
 }
 
 @Composable
-fun YourStory(imageUrl: String, name: String) {
+private fun YourStory(imageUrl: String, name: String) {
   Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -282,11 +277,10 @@ fun YourStory(imageUrl: String, name: String) {
 }
 
 @Composable
-fun Story(imageUrl: String, name: String) {
+private fun Story(imageUrl: String, name: String) {
   Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        // Load the story image asynchronously
         AsyncImage(
             model = imageUrl,
             contentDescription = null,
@@ -305,83 +299,4 @@ fun Story(imageUrl: String, name: String) {
             contentScale = ContentScale.Crop)
         Text(text = name, fontWeight = FontWeight.Normal, fontSize = 13.sp)
       }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeAppBarPreview() {
-  InstagramCloneTheme { Header() }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomePreview() {
-  InstagramCloneTheme { Home() }
-}
-
-@Preview
-@Composable
-fun HomeDarkPreview() {
-  InstagramCloneTheme(darkTheme = true) { Home() }
-}
-
-@Composable
-fun BottomNavigationBar() {
-  BottomAppBar(containerColor = Color(0xFFFAFAFA)) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-    ) {
-      // Create an icon button for home
-      IconButton(onClick = { /* do something */}) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-          Icon(
-              painter = painterResource(R.drawable.ic_home),
-              contentDescription = "Home Icon",
-              modifier = Modifier.size(25.dp))
-        }
-      }
-      // Create an icon button for search
-      IconButton(onClick = { /* do something */}) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-          Icon(
-              painter = painterResource(R.drawable.search_line_icon),
-              contentDescription = "Search Icon",
-              modifier = Modifier.size(25.dp))
-        }
-      }
-      // Create an icon button for add
-      IconButton(onClick = { /* do something */}) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-          Icon(
-              painter = painterResource(R.drawable.plus_square_line_icon),
-              contentDescription = "Add Icon",
-              modifier = Modifier.size(25.dp))
-        }
-      }
-      // Create an icon button for media
-      IconButton(onClick = { /* do something */}) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()) {
-              Icon(
-                  painter = painterResource(R.drawable.ic_reels),
-                  contentDescription = "Media Icon",
-                  modifier = Modifier.size(28.dp))
-            }
-      }
-      // Create an icon button for profile picture
-      IconButton(onClick = { /* do something */}) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()) {
-              AsyncImage(
-                  model = "https://i.imgur.com/qXqDyoe.png",
-                  contentDescription = null,
-                  modifier = Modifier.size(27.dp).clip(CircleShape).clickable(onClick = {}),
-                  contentScale = ContentScale.Crop)
-            }
-      }
-    }
-  }
 }
