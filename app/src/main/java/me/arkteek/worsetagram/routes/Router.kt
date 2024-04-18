@@ -20,5 +20,6 @@ fun Router(
     composable(route = "Home") { Home(changePage) }
     composable(route = "Search") { Search(changePage) }
     composable(route = "Messages") { Messages(changePage) }
+    composable(route = "Profile") { Profile(changePage) }
   }
 }
