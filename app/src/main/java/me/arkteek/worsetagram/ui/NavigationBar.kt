@@ -28,7 +28,7 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-      // Create an icon button for home
+      // Create an icon button for Home
       IconButton(onClick = { changePage("Home") }) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
           Icon(
@@ -37,7 +37,7 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
               modifier = Modifier.size(25.dp))
         }
       }
-      // Create an icon button for search
+      // Create an icon button for Search
       IconButton(onClick = { changePage("Search") }) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
           Icon(
@@ -46,8 +46,8 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
               modifier = Modifier.size(25.dp))
         }
       }
-      // Create an icon button for add
-      IconButton(onClick = { /* do something */}) {
+      // Create an icon button for Post
+      IconButton(onClick = { /* do something */ }) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
           Icon(
               painter = painterResource(R.drawable.plus_square_line_icon),
@@ -55,19 +55,19 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
               modifier = Modifier.size(25.dp))
         }
       }
-      // Create an icon button for media
-      IconButton(onClick = { /* do something */}) {
+      // Create an icon button for Messages
+      IconButton(onClick = { changePage("Messages") }) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()) {
               Icon(
                   painter = painterResource(R.drawable.ic_messages),
-                  contentDescription = "Media Icon",
+                  contentDescription = "Messages Icon",
                   modifier = Modifier.size(28.dp))
             }
       }
       // Create an icon button for profile picture
-      IconButton(onClick = { /* do something */}) {
+      IconButton(onClick = { /* do something */ }) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()) {
