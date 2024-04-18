@@ -61,7 +61,7 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()) {
               Icon(
-                  painter = painterResource(R.drawable.ic_reels),
+                  painter = painterResource(R.drawable.ic_messages),
                   contentDescription = "Media Icon",
                   modifier = Modifier.size(28.dp))
             }
