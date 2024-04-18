@@ -34,7 +34,7 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
       IconButton(onClick = { changePage("Search") }) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
           Icon(
-              painter = painterResource(R.drawable.search_line_icon),
+              painter = painterResource(R.drawable.ic_search),
               contentDescription = "Search Icon",
               modifier = Modifier.size(25.dp))
         }
@@ -42,7 +42,7 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
       IconButton(onClick = { /* do something */}) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
           Icon(
-              painter = painterResource(R.drawable.plus_square_line_icon),
+              painter = painterResource(R.drawable.ic_new_post),
               contentDescription = "Add Icon",
               modifier = Modifier.size(25.dp))
         }

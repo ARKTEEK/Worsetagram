@@ -135,21 +135,21 @@ fun PostSection(postModel: PostModel) {
         Row {
           IconButton(onClick = {}) {
             Icon(
-                painter = painterResource(R.drawable.heart_thin_icon),
+                painter = painterResource(R.drawable.ic_heart_thin),
                 contentDescription = "Like Icon",
                 modifier = Modifier.size(20.dp))
           }
 
           IconButton(onClick = {}) {
             Icon(
-                painter = painterResource(R.drawable.instagram_comment_icon),
+                painter = painterResource(R.drawable.ic_comment),
                 contentDescription = "Comment Icon",
                 modifier = Modifier.size(20.dp))
           }
 
           IconButton(onClick = {}) {
             Icon(
-                painter = painterResource(R.drawable.instagram_share_icon),
+                painter = painterResource(R.drawable.ic_share),
                 contentDescription = "Share Icon",
                 modifier = Modifier.size(20.dp))
           }
@@ -157,7 +157,7 @@ fun PostSection(postModel: PostModel) {
 
         IconButton(onClick = {}) {
           Icon(
-              painter = painterResource(R.drawable.saved_icon),
+              painter = painterResource(R.drawable.ic_bookmark),
               contentDescription = "Save Icon",
               modifier = Modifier.size(20.dp))
         }
