@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/Project.xml
+.idea/deploymentTargetDropDown.xml
+.idea/ktfmt.xml
+.idea/misc.xml
+.idea/vcs.xml
+.idea/misc.xml
+.idea/deploymentTargetDropDown.xml
