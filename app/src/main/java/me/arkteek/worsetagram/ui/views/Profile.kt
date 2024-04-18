@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui
+package me.arkteek.worsetagram.ui.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,12 +16,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,11 +33,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
+import me.arkteek.worsetagram.ui.common.BottomNavigationBar
+import me.arkteek.worsetagram.ui.common.HeaderBar
 
 @Composable
 fun Profile(changePage: (String) -> Unit) {
   Scaffold(
-      topBar = { Header() },
+      topBar = {
+        HeaderBar(
+            title = "Profile",
+            customActions =
+                listOf {
+                  IconButton(onClick = {}) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_settings),
+                        contentDescription = "Settings",
+                        modifier = Modifier.size(24.dp))
+                  }
+                })
+      },
       bottomBar = { BottomNavigationBar(changePage) },
       content = { paddingValues -> ProfileContent(modifier = Modifier.padding(paddingValues)) })
 }
@@ -77,13 +89,13 @@ private fun ProfileContent(modifier: Modifier = Modifier) {
     Row(
         modifier = Modifier.fillMaxWidth().weight(0.8f).padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween) {
-          ProfileButton(text = "Edit Profile")
+          ProfileButton()
         }
   }
 }
 
 @Composable
-fun ProfileCount(text: String, count: String) {
+private fun ProfileCount(text: String, count: String) {
   Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(2.dp)) {
     Text(text = text, fontSize = 16.sp, fontWeight = FontWeight.Bold)
     Text(text = count, fontSize = 14.sp)
@@ -91,7 +103,7 @@ fun ProfileCount(text: String, count: String) {
 }
 
 @Composable
-fun ProfileButton(text: String) {
+private fun ProfileButton() {
   Box(
       modifier =
           Modifier.fillMaxWidth()
@@ -102,31 +114,10 @@ fun ProfileButton(text: String) {
               .clickable {},
       contentAlignment = Alignment.Center) {
         Text(
-            text = text,
+            text = "Edit Profile",
             color = Color.Black,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(8.dp).fillMaxSize())
       }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun Header() {
-  TopAppBar(
-      title = {
-        Text(
-            "Profile",
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-        )
-      },
-      actions = {
-        IconButton(onClick = {}) {
-          Icon(
-              painter = painterResource(R.drawable.ic_settings),
-              contentDescription = "Settings",
-              modifier = Modifier.size(24.dp))
-        }
-      })
 }
