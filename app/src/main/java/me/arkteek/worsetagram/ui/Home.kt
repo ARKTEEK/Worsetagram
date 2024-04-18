@@ -1,5 +1,6 @@
 package me.arkteek.worsetagram.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -50,17 +51,6 @@ fun Home(changePage: (String) -> Unit) {
         modifier =
             Modifier.padding(paddingValues).fillMaxSize().verticalScroll(rememberScrollState())) {
           Column {
-            // Story
-            Row(
-                modifier =
-                    Modifier.padding(top = 16.dp, bottom = 16.dp, start = 0.dp, end = 0.dp)
-                        .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                  YourStory(imageUrl = "https://i.imgur.com/qXqDyoe.png", name = "Your Story")
-                  Story(imageUrl = "https://i.imgur.com/oNxrcG0.jpeg", name = "petras")
-                  Story(imageUrl = "https://i.imgur.com/npLMqhC.jpeg", name = "antanas")
-                }
-
             PostSection(
                 Post(
                     description = "This is a dummy post",
@@ -228,7 +218,7 @@ private fun Header() {
   TopAppBar(
       title = {
         Text(
-            "For you",
+            "Worsetagram",
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
         )
@@ -247,56 +237,4 @@ private fun Header() {
               modifier = Modifier.size(24.dp))
         }
       })
-}
-
-@Composable
-private fun YourStory(imageUrl: String, name: String) {
-  Column(
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Box(
-            modifier =
-                Modifier.size(70.dp)
-                    .clickable(onClick = {})
-                    .border(
-                        width = 2.dp,
-                        brush =
-                            Brush.linearGradient(
-                                colors = listOf(Color.Yellow, Color.Red),
-                                start = Offset(0f, 0f),
-                                end = Offset(70f, 70f)),
-                        shape = CircleShape)) {
-              AsyncImage(
-                  model = imageUrl,
-                  contentDescription = null,
-                  modifier = Modifier.clip(CircleShape),
-                  contentScale = ContentScale.Crop)
-            }
-        Text(text = name, fontWeight = FontWeight.Normal, fontSize = 13.sp)
-      }
-}
-
-@Composable
-private fun Story(imageUrl: String, name: String) {
-  Column(
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = null,
-            modifier =
-                Modifier.size(70.dp)
-                    .clip(CircleShape)
-                    .border(
-                        width = 2.dp,
-                        brush =
-                            Brush.linearGradient(
-                                colors = listOf(Color.Yellow, Color.Red),
-                                start = Offset(0f, 0f),
-                                end = Offset(70f, 70f)),
-                        shape = CircleShape)
-                    .clickable(onClick = {}),
-            contentScale = ContentScale.Crop)
-        Text(text = name, fontWeight = FontWeight.Normal, fontSize = 13.sp)
-      }
 }
