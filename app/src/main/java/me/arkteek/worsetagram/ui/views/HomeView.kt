@@ -40,7 +40,7 @@ import me.arkteek.worsetagram.ui.common.BottomNavigationBar
 import me.arkteek.worsetagram.ui.common.HeaderBar
 
 @Composable
-fun Home(changePage: (String) -> Unit) {
+fun HomeView(changePage: (String) -> Unit) {
   Scaffold(
       topBar = {
         HeaderBar(

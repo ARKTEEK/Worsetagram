@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.views.conversations
+package me.arkteek.worsetagram.ui.views.chat
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,7 +42,7 @@ import me.arkteek.worsetagram.ui.common.HeaderBar
 import me.arkteek.worsetagram.ui.common.SearchBar
 
 @Composable
-fun Conversations(changePage: (String) -> Unit) {
+fun ChatsListView(changePage: (String) -> Unit) {
   Scaffold(
       topBar = {
         HeaderBar(
@@ -74,12 +74,12 @@ fun Conversations(changePage: (String) -> Unit) {
                       ConversationsModel(
                           avatar = "https://i.imgur.com/oNxrcG0.jpeg",
                           name = "Petras Jonutis",
-                          lastMessage = "This is a dummy message!"),
+                          lastMessage = "Bye!"),
                       ConversationsModel(
                           avatar = "https://i.imgur.com/oNxrcG0.jpeg",
                           name = "Jonas Petrautis",
                           lastMessage = "Dummy message..."))
-              ConversationsTab(conversations = messages) { changePage("Message") }
+              ConversationsTab(conversations = messages) { changePage("Chat") }
             }
       }
 }

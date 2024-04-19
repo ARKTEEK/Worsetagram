@@ -37,7 +37,7 @@ import me.arkteek.worsetagram.ui.common.BottomNavigationBar
 import me.arkteek.worsetagram.ui.common.HeaderBar
 
 @Composable
-fun Profile(changePage: (String) -> Unit) {
+fun ProfileView(changePage: (String) -> Unit) {
   Scaffold(
       topBar = {
         HeaderBar(

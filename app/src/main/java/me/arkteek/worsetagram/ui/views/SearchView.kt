@@ -16,7 +16,7 @@ import me.arkteek.worsetagram.ui.common.BottomNavigationBar
 import me.arkteek.worsetagram.ui.common.SearchBar
 
 @Composable
-fun Search(changePage: (String) -> Unit) {
+fun SearchView(changePage: (String) -> Unit) {
   Scaffold(
       topBar = {
         var searchText by remember { mutableStateOf("") }
