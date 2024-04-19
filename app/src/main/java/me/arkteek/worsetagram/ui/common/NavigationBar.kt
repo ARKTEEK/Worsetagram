@@ -47,7 +47,7 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
               modifier = Modifier.size(25.dp))
         }
       }
-      IconButton(onClick = { changePage("Messages") }) {
+      IconButton(onClick = { changePage("ChatsList") }) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()) {
