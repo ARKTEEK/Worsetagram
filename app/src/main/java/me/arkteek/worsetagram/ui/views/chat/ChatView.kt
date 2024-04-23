@@ -58,15 +58,16 @@ fun ChatView(changePage: (String) -> Unit) {
         MessageModel("9", "See you later!", "friend", System.currentTimeMillis() - 20000),
         MessageModel("10", "Bye!", "me", System.currentTimeMillis() - 10000))
   }
+
   var messageText by remember { mutableStateOf("") }
   val scrollState = rememberLazyListState()
 
-  val onSendMessage: (String) -> Unit = {
-    if (it.isNotBlank()) {
+  val onSendMessage: (String) -> Unit = { message ->
+    if (message.isNotBlank()) {
       val newMessage =
           MessageModel(
               id = UUID.randomUUID().toString(),
-              content = it,
+              content = message,
               sender = "me",
               timestamp = System.currentTimeMillis())
       messages.add(newMessage)
@@ -76,7 +77,7 @@ fun ChatView(changePage: (String) -> Unit) {
 
   Scaffold(
       topBar = { TopBarApp(changePage, title = "Petras Jonutis") },
-      bottomBar = { MessageInput(onSendMessage = onSendMessage) },
+      bottomBar = { MessageInput(onSendMessage = onSendMessage, messageText = messageText) },
       content = { paddingValues ->
         LazyColumn(contentPadding = paddingValues, state = scrollState) {
           items(messages) { message -> MessageItem(message = message) }
@@ -103,15 +104,15 @@ fun TopBarApp(changePage: (String) -> Unit, title: String) {
 }
 
 @Composable
-fun MessageInput(onSendMessage: (String) -> Unit) {
-  var messageText by remember { mutableStateOf("") }
+fun MessageInput(onSendMessage: (String) -> Unit, messageText: String) {
+  var currentMessage by remember { mutableStateOf(messageText) }
 
   Row(
       modifier = Modifier.fillMaxWidth().padding(16.dp),
       verticalAlignment = Alignment.CenterVertically) {
         BasicTextField(
-            value = messageText,
-            onValueChange = { messageText = it },
+            value = currentMessage,
+            onValueChange = { currentMessage = it },
             singleLine = true,
             textStyle = TextStyle.Default.copy(fontSize = 14.sp),
             modifier =
@@ -127,17 +128,19 @@ fun MessageInput(onSendMessage: (String) -> Unit) {
                   }
             })
         Spacer(modifier = Modifier.width(8.dp))
-        Button(
-            onClick = {
-              onSendMessage(messageText)
-              messageText = ""
-            },
-            modifier =
-                Modifier.height(ButtonDefaults.MinHeight)
-                    .background(Color.Transparent, shape = RoundedCornerShape(16.dp)),
-            shape = RoundedCornerShape(16.dp)) {
-              Text(text = "Send", color = Color.White)
-            }
+        SendMessageButton(onSendMessage = { onSendMessage(currentMessage) })
+      }
+}
+
+@Composable
+fun SendMessageButton(onSendMessage: () -> Unit) {
+  Button(
+      onClick = { onSendMessage() },
+      modifier =
+          Modifier.height(ButtonDefaults.MinHeight)
+              .background(Color.Transparent, shape = RoundedCornerShape(16.dp)),
+      shape = RoundedCornerShape(16.dp)) {
+        Text(text = "Send", color = Color.White)
       }
 }
 
@@ -147,31 +150,22 @@ fun MessageItem(message: MessageModel) {
 
   Column(
       horizontalAlignment = if (isSentByMe) Alignment.End else Alignment.Start,
-      modifier = Modifier.padding(8.dp).fillMaxWidth()) {
-        Box(
-            modifier =
-                Modifier.padding(8.dp)
-                    .background(
-                        if (isSentByMe) Color.Blue else Color.Gray, RoundedCornerShape(8.dp))
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-            contentAlignment = if (isSentByMe) Alignment.CenterEnd else Alignment.CenterStart) {
-              Text(
-                  text = message.content,
-                  color = if (isSentByMe) Color.White else Color.Black,
-                  fontSize = 14.sp)
-            }
-
-        Text(
-            text = formatTimestamp(message.timestamp),
-            color = Color.Gray,
-            fontSize = 12.sp,
-            modifier = Modifier.padding(start = if (isSentByMe) 8.dp else 16.dp, top = 4.dp))
+      modifier = Modifier.padding(0.dp).fillMaxWidth()) {
+        MessageBubble(message = message, isSentByMe = isSentByMe)
       }
 }
 
-fun formatTimestamp(timestamp: Long): String {
-  val currentMillis = System.currentTimeMillis()
-  val diffMillis = currentMillis - timestamp
-  val diffMinutes = diffMillis / (60 * 1000)
-  return "sent $diffMinutes min ago"
+@Composable
+fun MessageBubble(message: MessageModel, isSentByMe: Boolean) {
+  Box(
+      modifier =
+          Modifier.padding(6.dp)
+              .background(if (isSentByMe) Color.Blue else Color.Gray, RoundedCornerShape(8.dp))
+              .padding(horizontal = 12.dp, vertical = 8.dp),
+      contentAlignment = if (isSentByMe) Alignment.CenterEnd else Alignment.CenterStart) {
+        Text(
+            text = message.content,
+            color = if (isSentByMe) Color.White else Color.Black,
+            fontSize = 14.sp)
+      }
 }
