@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package me.arkteek.worsetagram.ui.views.chat
+package me.arkteek.worsetagram.ui.view.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,23 +40,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.arkteek.worsetagram.models.MessageModel
+import me.arkteek.worsetagram.domain.model.Message
 import java.util.UUID
 
 @Composable
-fun ChatView(changePage: (String) -> Unit) {
+fun ChatScreen(changePage: (String) -> Unit) {
   val messages = remember {
     mutableStateListOf(
-        MessageModel("1", "Hello!", "friend", System.currentTimeMillis() - 100000),
-        MessageModel("2", "Hi!", "me", System.currentTimeMillis() - 90000),
-        MessageModel("3", "How are you?", "friend", System.currentTimeMillis() - 80000),
-        MessageModel("4", "I'm good, thanks!", "me", System.currentTimeMillis() - 70000),
-        MessageModel("5", "What about you?", "me", System.currentTimeMillis() - 60000),
-        MessageModel("6", "I'm doing great!", "friend", System.currentTimeMillis() - 50000),
-        MessageModel("7", "That's good to hear!", "me", System.currentTimeMillis() - 40000),
-        MessageModel("8", "Yeah!", "friend", System.currentTimeMillis() - 30000),
-        MessageModel("9", "See you later!", "friend", System.currentTimeMillis() - 20000),
-        MessageModel("10", "Bye!", "me", System.currentTimeMillis() - 10000))
+        Message("1", "Hello!", "friend", System.currentTimeMillis() - 100000),
+        Message("2", "Hi!", "me", System.currentTimeMillis() - 90000),
+        Message("3", "How are you?", "friend", System.currentTimeMillis() - 80000),
+        Message("4", "I'm good, thanks!", "me", System.currentTimeMillis() - 70000),
+        Message("5", "What about you?", "me", System.currentTimeMillis() - 60000),
+        Message("6", "I'm doing great!", "friend", System.currentTimeMillis() - 50000),
+        Message("7", "That's good to hear!", "me", System.currentTimeMillis() - 40000),
+        Message("8", "Yeah!", "friend", System.currentTimeMillis() - 30000),
+        Message("9", "See you later!", "friend", System.currentTimeMillis() - 20000),
+        Message("10", "Bye!", "me", System.currentTimeMillis() - 10000))
   }
 
   var messageText by remember { mutableStateOf("") }
@@ -65,7 +65,7 @@ fun ChatView(changePage: (String) -> Unit) {
   val onSendMessage: (String) -> Unit = { message ->
     if (message.isNotBlank()) {
       val newMessage =
-          MessageModel(
+          Message(
               id = UUID.randomUUID().toString(),
               content = message,
               sender = "me",
@@ -145,7 +145,7 @@ fun SendMessageButton(onSendMessage: () -> Unit) {
 }
 
 @Composable
-fun MessageItem(message: MessageModel) {
+fun MessageItem(message: Message) {
   val isSentByMe = message.sender == "me"
 
   Column(
@@ -156,7 +156,7 @@ fun MessageItem(message: MessageModel) {
 }
 
 @Composable
-fun MessageBubble(message: MessageModel, isSentByMe: Boolean) {
+fun MessageBubble(message: Message, isSentByMe: Boolean) {
   Box(
       modifier =
           Modifier.padding(6.dp)

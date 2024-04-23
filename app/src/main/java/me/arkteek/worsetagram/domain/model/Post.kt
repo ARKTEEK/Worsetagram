@@ -1,6 +1,6 @@
-package me.arkteek.worsetagram.models
+package me.arkteek.worsetagram.domain.model
 
-data class PostModel(
+data class Post(
     val author: String,
     val description: String,
     val likes: Int,

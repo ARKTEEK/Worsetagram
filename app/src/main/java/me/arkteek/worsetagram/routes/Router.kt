@@ -5,11 +5,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import me.arkteek.worsetagram.ui.views.HomeView
-import me.arkteek.worsetagram.ui.views.ProfileView
-import me.arkteek.worsetagram.ui.views.SearchView
-import me.arkteek.worsetagram.ui.views.chat.ChatView
-import me.arkteek.worsetagram.ui.views.chat.ChatsListView
+import me.arkteek.worsetagram.ui.view.screen.ChatListScreen
+import me.arkteek.worsetagram.ui.view.screen.ChatScreen
+import me.arkteek.worsetagram.ui.view.screen.HomeScreen
+import me.arkteek.worsetagram.ui.view.screen.NewPostScreen
+import me.arkteek.worsetagram.ui.view.screen.ProfileScreen
+import me.arkteek.worsetagram.ui.view.screen.SearchScreen
 
 @Composable
 fun Router(
@@ -18,14 +19,14 @@ fun Router(
     modifier: Modifier = Modifier
 ) {
   NavHost(modifier = modifier, navController = controller, startDestination = "Home") {
-    composable(route = "Home") { HomeView(changePage) }
-    composable(route = "Search") { SearchView(changePage) }
-    composable(route = "ChatsList") { ChatsListView(changePage) }
-    composable(route = "Profile") { ProfileView(changePage) }
+    composable(route = "Home") { HomeScreen(changePage) }
+    composable(route = "Search") { SearchScreen(changePage) }
+    composable(route = "ChatsList") { ChatListScreen(changePage) }
+    composable(route = "Profile") { ProfileScreen(changePage) }
     composable(route = "Settings") {}
     composable(route = "Post") {}
-    composable(route = "AddPost") {}
-    composable(route = "Chat") { ChatView(changePage) }
+    composable(route = "NewPost") { NewPostScreen(changePage) }
+    composable(route = "Chat") { ChatScreen(changePage) }
     composable(route = "ProfileEdit") {}
   }
 }

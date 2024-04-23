@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.common
+package me.arkteek.worsetagram.ui.view.component
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text

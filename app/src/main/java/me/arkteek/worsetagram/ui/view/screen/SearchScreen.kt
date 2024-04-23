@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.views
+package me.arkteek.worsetagram.ui.view.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,11 +12,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import me.arkteek.worsetagram.ui.common.BottomNavigationBar
-import me.arkteek.worsetagram.ui.common.SearchBar
+import me.arkteek.worsetagram.ui.view.component.BottomNavigationBar
+import me.arkteek.worsetagram.ui.view.component.SearchBar
 
 @Composable
-fun SearchView(changePage: (String) -> Unit) {
+fun SearchScreen(changePage: (String) -> Unit) {
   Scaffold(
       topBar = {
         var searchText by remember { mutableStateOf("") }

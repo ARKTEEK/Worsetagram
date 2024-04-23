@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.common
+package me.arkteek.worsetagram.ui.view.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

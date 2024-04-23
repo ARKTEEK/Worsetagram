@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.views.chat
+package me.arkteek.worsetagram.ui.view.screen
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -36,13 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.models.ConversationsModel
-import me.arkteek.worsetagram.ui.common.BottomNavigationBar
-import me.arkteek.worsetagram.ui.common.HeaderBar
-import me.arkteek.worsetagram.ui.common.SearchBar
+import me.arkteek.worsetagram.domain.model.ChatItem
+import me.arkteek.worsetagram.ui.view.component.BottomNavigationBar
+import me.arkteek.worsetagram.ui.view.component.HeaderBar
+import me.arkteek.worsetagram.ui.view.component.SearchBar
 
 @Composable
-fun ChatsListView(changePage: (String) -> Unit) {
+fun ChatListScreen(changePage: (String) -> Unit) {
   Scaffold(
       topBar = {
         HeaderBar(
@@ -71,48 +71,49 @@ fun ChatsListView(changePage: (String) -> Unit) {
 
               val messages =
                   listOf(
-                      ConversationsModel(
+                      ChatItem(
                           avatar = "https://i.imgur.com/oNxrcG0.jpeg",
                           name = "Petras Jonutis",
                           lastMessage = "Bye!"),
-                      ConversationsModel(
+                      ChatItem(
                           avatar = "https://i.imgur.com/oNxrcG0.jpeg",
                           name = "Jonas Petrautis",
                           lastMessage = "Dummy message..."))
-              ConversationsTab(conversations = messages) { changePage("Chat") }
+
+              ChatsTab(chats = messages) { changePage("Chat") }
             }
       }
 }
 
 @Composable
-private fun ConversationsTab(conversations: List<ConversationsModel>, onClick: () -> Unit) {
+private fun ChatsTab(chats: List<ChatItem>, onClick: () -> Unit) {
   Column(modifier = Modifier.padding(16.dp)) {
-    conversations.forEach { conversation ->
-      ConversationItem(conversation = conversation, onClick)
+    chats.forEach { chat ->
+      ChatItem(chat = chat, onClick)
       Spacer(modifier = Modifier.height(8.dp))
     }
   }
 }
 
 @Composable
-private fun ConversationItem(conversation: ConversationsModel, onClick: () -> Unit) {
+private fun ChatItem(chat: ChatItem, onClick: () -> Unit) {
   Row(
       verticalAlignment = Alignment.CenterVertically,
       modifier = Modifier.clickable(onClick = onClick)) {
-        Avatar(image = conversation.avatar)
+        Avatar(image = chat.avatar)
 
         Spacer(modifier = Modifier.width(12.dp))
 
         Column {
           Text(
-              text = conversation.name,
+              text = chat.name,
               maxLines = 1,
               overflow = TextOverflow.Ellipsis,
               modifier = Modifier.fillMaxWidth(),
               fontWeight = FontWeight.Bold)
 
           Text(
-              text = conversation.lastMessage,
+              text = chat.lastMessage,
               maxLines = 1,
               overflow = TextOverflow.Ellipsis,
               modifier = Modifier.fillMaxWidth(),

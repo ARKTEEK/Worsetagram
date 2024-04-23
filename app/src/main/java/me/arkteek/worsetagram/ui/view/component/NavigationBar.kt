@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.common
+package me.arkteek.worsetagram.ui.view.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,7 +39,7 @@ fun BottomNavigationBar(changePage: (String) -> Unit) {
               modifier = Modifier.size(25.dp))
         }
       }
-      IconButton(onClick = { /* do something */}) {
+      IconButton(onClick = { changePage("NewPost") }) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
           Icon(
               painter = painterResource(R.drawable.ic_new_post),

@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.views
+package me.arkteek.worsetagram.ui.view.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -35,12 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.models.PostModel
-import me.arkteek.worsetagram.ui.common.BottomNavigationBar
-import me.arkteek.worsetagram.ui.common.HeaderBar
+import me.arkteek.worsetagram.domain.model.Post
+import me.arkteek.worsetagram.ui.view.component.BottomNavigationBar
+import me.arkteek.worsetagram.ui.view.component.HeaderBar
 
 @Composable
-fun HomeView(changePage: (String) -> Unit) {
+fun HomeScreen(changePage: (String) -> Unit) {
   Scaffold(
       topBar = {
         HeaderBar(
@@ -64,7 +64,7 @@ fun HomeView(changePage: (String) -> Unit) {
                     .verticalScroll(rememberScrollState())) {
               Column {
                 PostSection(
-                    PostModel(
+                    Post(
                         description = "This is a dummy post",
                         author = "Petras Jonutis",
                         likes = 3700,
@@ -74,7 +74,7 @@ fun HomeView(changePage: (String) -> Unit) {
                                 "https://i.imgur.com/PEpAtBe.jpeg",
                                 "https://i.imgur.com/84p7L9H.jpeg")))
                 PostSection(
-                    PostModel(
+                    Post(
                         description = "This is a dummy post",
                         author = "Petras Jonutis",
                         likes = 3700,
@@ -84,7 +84,7 @@ fun HomeView(changePage: (String) -> Unit) {
                                 "https://i.imgur.com/PEpAtBe.jpeg",
                                 "https://i.imgur.com/84p7L9H.jpeg")))
                 PostSection(
-                    PostModel(
+                    Post(
                         description = "This is a dummy post",
                         author = "Petras Jonutis",
                         likes = 3700,
@@ -99,7 +99,7 @@ fun HomeView(changePage: (String) -> Unit) {
 }
 
 @Composable
-fun PostSection(postModel: PostModel) {
+fun PostSection(postModel: Post) {
   Surface(modifier = Modifier.padding(top = 6.dp, bottom = 6.dp)) {
     Column {
       Row(
@@ -114,8 +114,7 @@ fun PostSection(postModel: PostModel) {
             }
 
             Column(Modifier.weight(6f).padding(end = 16.dp)) {
-              Text(text = postModel.author, fontWeight = FontWeight.Normal, fontSize = 11.sp)
-              Text(text = postModel.author, fontWeight = FontWeight.Normal, fontSize = 10.sp)
+              Text(text = postModel.author, fontWeight = FontWeight.Normal, fontSize = 12.sp)
             }
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
               Icon(

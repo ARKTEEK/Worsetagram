@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.views
+package me.arkteek.worsetagram.ui.view.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,11 +33,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.ui.common.BottomNavigationBar
-import me.arkteek.worsetagram.ui.common.HeaderBar
+import me.arkteek.worsetagram.ui.view.component.BottomNavigationBar
+import me.arkteek.worsetagram.ui.view.component.HeaderBar
 
 @Composable
-fun ProfileView(changePage: (String) -> Unit) {
+fun ProfileScreen(changePage: (String) -> Unit) {
   Scaffold(
       topBar = {
         HeaderBar(
