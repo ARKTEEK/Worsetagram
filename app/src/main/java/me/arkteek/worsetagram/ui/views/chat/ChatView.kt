@@ -160,7 +160,7 @@ fun MessageBubble(message: MessageModel, isSentByMe: Boolean) {
   Box(
       modifier =
           Modifier.padding(6.dp)
-              .background(if (isSentByMe) Color.Blue else Color.Gray, RoundedCornerShape(8.dp))
+              .background(if (isSentByMe) Color.Blue else Color.LightGray, RoundedCornerShape(8.dp))
               .padding(horizontal = 12.dp, vertical = 8.dp),
       contentAlignment = if (isSentByMe) Alignment.CenterEnd else Alignment.CenterStart) {
         Text(
