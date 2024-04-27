@@ -1,10 +1,7 @@
 plugins {
-  id("com.android.application")
-  id("org.jetbrains.kotlin.android")
-  id("com.google.gms.google-services")
-  id("com.google.dagger.hilt.android")
-  id("kotlin-kapt")
-  kotlin("kapt")
+  alias(libs.plugins.androidApplication)
+  alias(libs.plugins.jetbrainsKotlin)
+  alias(libs.plugins.googleGms)
 }
 
 android {
@@ -28,10 +25,12 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
+
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
   }
+
   kotlinOptions { jvmTarget = "17" }
   buildFeatures { compose = true }
   composeOptions { kotlinCompilerExtensionVersion = "1.4.3" }
@@ -39,37 +38,33 @@ android {
 }
 
 dependencies {
-  implementation("androidx.core:core-ktx:1.13.0")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-  implementation("androidx.activity:activity-compose:1.9.0")
-  implementation(platform("androidx.compose:compose-bom:2024.04.01"))
-  implementation("androidx.compose.ui:ui")
-  implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
-  implementation("io.coil-kt:coil-compose:2.6.0")
-  implementation("com.google.firebase:firebase-analytics")
-  implementation("com.google.accompanist:accompanist-permissions:0.34.0")
-  implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
-  implementation("androidx.compose.ui:ui-graphics")
-  implementation("androidx.compose.ui:ui-tooling-preview")
-  implementation("androidx.compose.material3:material3")
-  implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
-  implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-  implementation("androidx.navigation:navigation-compose:2.7.7")
-  implementation("com.google.firebase:firebase-auth:22.3.1")
-  implementation("androidx.appcompat:appcompat:1.6.1")
-  implementation("com.google.android.material:material:1.11.0")
-  implementation("androidx.activity:activity-ktx:1.9.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-  implementation("com.google.dagger:hilt-android:2.51.1")
-  kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.lifecycle.runtime.ktx)
+  implementation(libs.androidx.activity.compose)
+  implementation(platform(libs.androidx.compose.bom))
+  implementation(libs.androidx.compose.ui)
+  implementation(platform(libs.firebase.bom))
+  implementation(libs.coil.compose.v250)
+  implementation(libs.firebase.analytics)
+  implementation(libs.accompanist.permissions)
+  implementation(libs.accompanist.systemuicontroller.v0270)
+  implementation(libs.androidx.compose.ui.graphics)
+  implementation(libs.androidx.compose.ui.tooling.preview)
+  implementation(libs.androidx.compose.material3)
+  implementation(libs.androidx.navigation.runtime.ktx)
+  implementation(libs.androidx.hilt.navigation.compose)
+  implementation(libs.androidx.navigation.compose)
+  implementation(libs.firebase.auth)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.material)
+  implementation(libs.androidx.activity)
+  implementation(libs.androidx.constraintlayout)
 
-  testImplementation("junit:junit:4.13.2")
-  androidTestImplementation("androidx.test.ext:junit:1.1.5")
-  androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-  androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.01"))
-  androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-  debugImplementation("androidx.compose.ui:ui-tooling")
-  debugImplementation("androidx.compose.ui:ui-test-manifest")
+  testImplementation(libs.junit)
+  androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.espresso.core)
+  androidTestImplementation(platform(libs.androidx.compose.bom))
+  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+  debugImplementation(libs.androidx.compose.ui.tooling)
+  debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
-
-kapt { correctErrorTypes = true }

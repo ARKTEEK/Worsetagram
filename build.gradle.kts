@@ -1,13 +1,17 @@
 buildscript {
   dependencies {
-    classpath("com.google.gms:google-services:4.4.1")
-    classpath("com.google.dagger:hilt-android-gradle-plugin:2.50")
+    classpath(libs.google.services)
+    classpath(libs.hilt.android.gradle.plugin)
+  }
+  repositories {
+    mavenCentral()
+    google()
   }
 }
 
 plugins {
-  id("com.android.application") version "8.1.1" apply false
-  id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-  id("com.google.gms.google-services") version "4.4.1" apply false
-  id("com.google.dagger.hilt.android") version "2.50" apply false
+  alias(libs.plugins.androidApplication) apply false
+  alias(libs.plugins.jetbrainsKotlin) apply false
+  alias(libs.plugins.googleGms) apply false
+  alias(libs.plugins.daggerHilt) apply false
 }
