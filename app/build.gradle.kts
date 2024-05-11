@@ -2,6 +2,9 @@ plugins {
   alias(libs.plugins.androidApplication)
   alias(libs.plugins.jetbrainsKotlin)
   alias(libs.plugins.googleGms)
+
+  kotlin("kapt")
+  alias(libs.plugins.daggerHilt)
 }
 
 android {
@@ -59,6 +62,13 @@ dependencies {
   implementation(libs.material)
   implementation(libs.androidx.activity)
   implementation(libs.androidx.constraintlayout)
+  implementation(libs.hilt.android)
+  implementation(libs.retrofit)
+  implementation(libs.converter.gson)
+  implementation(libs.androidx.lifecycle.viewmodel.compose)
+  implementation(libs.androidx.lifecycle.runtime.compose)
+  implementation(libs.androidx.constraintlayout.compose)
+  kapt(libs.hilt.android.compiler)
 
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
@@ -68,3 +78,6 @@ dependencies {
   debugImplementation(libs.androidx.compose.ui.tooling)
   debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
+
+// Allow references to generated code
+kapt { correctErrorTypes = true }
