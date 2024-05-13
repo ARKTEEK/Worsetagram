@@ -4,14 +4,23 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import javax.inject.Inject
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import me.arkteek.worsetagram.common.await
 import me.arkteek.worsetagram.domain.model.AuthResource
 import me.arkteek.worsetagram.domain.repository.AuthRepository
 
 class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAuth) :
   AuthRepository {
-  override val currentUser: FirebaseUser?
-    get() = firebaseAuth.currentUser
+  override val user: Flow<FirebaseUser?>
+    get() = callbackFlow {
+      val authListener = FirebaseAuth.AuthStateListener { trySend(it.currentUser) }
+
+      firebaseAuth.addAuthStateListener(authListener)
+
+      awaitClose { firebaseAuth.removeAuthStateListener(authListener) }
+    }
 
   override suspend fun login(email: String, password: String): AuthResource<FirebaseUser> {
     return try {
