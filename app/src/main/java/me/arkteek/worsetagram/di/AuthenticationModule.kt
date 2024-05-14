@@ -10,7 +10,7 @@ import me.arkteek.worsetagram.domain.repository.AuthRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object AuthenticationModule {
   @Provides fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
   @Provides fun providesAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl

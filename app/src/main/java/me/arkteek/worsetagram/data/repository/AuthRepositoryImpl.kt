@@ -9,9 +9,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import me.arkteek.worsetagram.common.await
 import me.arkteek.worsetagram.domain.model.AuthResource
+import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.AuthRepository
+import me.arkteek.worsetagram.domain.repository.UserRepository
 
-class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAuth) :
+class AuthRepositoryImpl
+@Inject
+constructor(private val firebaseAuth: FirebaseAuth, private val userRepository: UserRepository) :
   AuthRepository {
   override val user: Flow<FirebaseUser?>
     get() = callbackFlow {
@@ -42,6 +46,10 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
       result.user
         ?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
         ?.await()
+
+      val user = User(result.user?.uid, name, email)
+      userRepository.merge(user)
+
       return AuthResource.Success(result.user!!)
     } catch (e: Exception) {
       e.printStackTrace()
