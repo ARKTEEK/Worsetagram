@@ -68,7 +68,7 @@ dependencies {
   implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.androidx.lifecycle.runtime.compose)
   implementation(libs.androidx.constraintlayout.compose)
-  implementation(libs.firebase.database)
+  implementation(libs.firebase.firestore)
   kapt(libs.hilt.android.compiler)
 
   testImplementation(libs.junit)
