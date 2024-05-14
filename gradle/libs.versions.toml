@@ -27,6 +27,7 @@ constraintlayout = "2.1.4"
 navigationCompose = "2.7.7"
 retrofit = "2.9.0"
 firebaseFirestore = "25.0.0"
+firebaseStorage = "21.0.0"
 
 [libraries]
 accompanist-systemuicontroller-v0270 = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -66,6 +67,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 
 
 [plugins]
