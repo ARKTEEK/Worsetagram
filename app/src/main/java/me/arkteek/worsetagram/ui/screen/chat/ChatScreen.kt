@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package me.arkteek.worsetagram.ui.screen
+package me.arkteek.worsetagram.ui.screen.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import java.util.UUID
 import me.arkteek.worsetagram.domain.model.Message
-import me.arkteek.worsetagram.ui.viewModel.AuthViewModel
+import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
 
 @Composable
 fun ChatScreen(viewModel: AuthViewModel?, navController: NavHostController) {

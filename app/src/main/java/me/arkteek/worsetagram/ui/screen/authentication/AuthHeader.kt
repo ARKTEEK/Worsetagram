@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen.auth
+package me.arkteek.worsetagram.ui.screen.authentication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -22,24 +22,20 @@ import me.arkteek.worsetagram.R
 fun AuthHeader() {
   Column(
     modifier = Modifier.wrapContentSize(),
-    horizontalAlignment = Alignment.CenterHorizontally
+    horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Image(
-      modifier = Modifier
-        .size(128.dp, 128.dp),
+      modifier = Modifier.size(128.dp, 128.dp),
       painter = painterResource(id = R.drawable.ic_home),
-      contentDescription = stringResource(id = R.string.app_name)
+      contentDescription = stringResource(id = R.string.app_name),
     )
 
     Text(
-      modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .padding(top = 50.dp),
+      modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(top = 50.dp),
       text = stringResource(id = R.string.app_name),
       style = MaterialTheme.typography.headlineMedium,
       textAlign = TextAlign.Center,
-      color = MaterialTheme.colorScheme.onSurface
+      color = MaterialTheme.colorScheme.onSurface,
     )
   }
 }

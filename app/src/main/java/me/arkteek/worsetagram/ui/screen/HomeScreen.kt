@@ -39,7 +39,7 @@ import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.domain.model.Post
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
-import me.arkteek.worsetagram.ui.viewModel.AuthViewModel
+import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
 
 @Composable
 fun HomeScreen(viewModel: AuthViewModel?, navController: NavHostController) {
@@ -47,23 +47,24 @@ fun HomeScreen(viewModel: AuthViewModel?, navController: NavHostController) {
     Scaffold(
       topBar = {
         HeaderBar(
-          title = it.email.toString(),
+          title = "Worsetagram",
           customActions =
-          listOf {
-            IconButton(onClick = {}) {
-              Icon(
-                painter = painterResource(R.drawable.ic_heart),
-                contentDescription = "Heart Icon",
-                modifier = Modifier.size(24.dp),
-              )
-            }
-          },
+            listOf {
+              IconButton(onClick = {}) {
+                Icon(
+                  painter = painterResource(R.drawable.ic_heart),
+                  contentDescription = "Heart Icon",
+                  modifier = Modifier.size(24.dp),
+                )
+              }
+            },
         )
       },
       bottomBar = { BottomNavigationBar(navController) },
     ) { paddingValues ->
       Column(
-        modifier = Modifier.padding(paddingValues).fillMaxSize().verticalScroll(rememberScrollState())
+        modifier =
+          Modifier.padding(paddingValues).fillMaxSize().verticalScroll(rememberScrollState())
       ) {
         Column {
           PostSection(
@@ -72,7 +73,8 @@ fun HomeScreen(viewModel: AuthViewModel?, navController: NavHostController) {
               author = "Petras Jonutis",
               likes = 3700,
               comments = 39,
-              images = listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg"),
+              images =
+                listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg"),
             )
           )
           PostSection(
@@ -81,7 +83,8 @@ fun HomeScreen(viewModel: AuthViewModel?, navController: NavHostController) {
               author = "Petras Jonutis",
               likes = 3700,
               comments = 39,
-              images = listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg"),
+              images =
+                listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg"),
             )
           )
           PostSection(
@@ -90,7 +93,8 @@ fun HomeScreen(viewModel: AuthViewModel?, navController: NavHostController) {
               author = "Petras Jonutis",
               likes = 3700,
               comments = 39,
-              images = listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg"),
+              images =
+                listOf("https://i.imgur.com/PEpAtBe.jpeg", "https://i.imgur.com/84p7L9H.jpeg"),
             )
           )
         }

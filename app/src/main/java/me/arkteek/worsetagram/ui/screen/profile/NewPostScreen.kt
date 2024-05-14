@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen
+package me.arkteek.worsetagram.ui.screen.profile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
-import me.arkteek.worsetagram.ui.viewModel.AuthViewModel
+import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
 
 @Composable
 fun NewPostScreen(viewModel: AuthViewModel?, navController: NavHostController) {

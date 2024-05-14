@@ -14,14 +14,14 @@ import me.arkteek.worsetagram.common.ROUTE_POST
 import me.arkteek.worsetagram.common.ROUTE_PROFILE
 import me.arkteek.worsetagram.common.ROUTE_SEARCH
 import me.arkteek.worsetagram.common.ROUTE_SIGNUP
-import me.arkteek.worsetagram.ui.screen.ChatListScreen
+import me.arkteek.worsetagram.ui.screen.chat.ChatListScreen
 import me.arkteek.worsetagram.ui.screen.HomeScreen
-import me.arkteek.worsetagram.ui.screen.NewPostScreen
-import me.arkteek.worsetagram.ui.screen.ProfileScreen
+import me.arkteek.worsetagram.ui.screen.profile.NewPostScreen
+import me.arkteek.worsetagram.ui.screen.profile.ProfileScreen
 import me.arkteek.worsetagram.ui.screen.SearchScreen
-import me.arkteek.worsetagram.ui.screen.auth.LoginScreen
-import me.arkteek.worsetagram.ui.screen.auth.SignupScreen
-import me.arkteek.worsetagram.ui.viewModel.AuthViewModel
+import me.arkteek.worsetagram.ui.screen.authentication.LoginScreen
+import me.arkteek.worsetagram.ui.screen.authentication.SignupScreen
+import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
 
 @Composable
 fun AppNavHost(

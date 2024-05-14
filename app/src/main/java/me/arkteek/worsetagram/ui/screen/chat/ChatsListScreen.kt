@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen
+package me.arkteek.worsetagram.ui.screen.chat
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -34,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
@@ -43,7 +42,7 @@ import me.arkteek.worsetagram.domain.model.ChatItem
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.SearchBar
-import me.arkteek.worsetagram.ui.viewModel.AuthViewModel
+import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
 
 @Composable
 fun ChatListScreen(viewModel: AuthViewModel?, navController: NavHostController) {

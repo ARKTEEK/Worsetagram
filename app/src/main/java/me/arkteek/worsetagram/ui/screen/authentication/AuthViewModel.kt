@@ -1,15 +1,16 @@
-package me.arkteek.worsetagram.ui.viewModel
+package me.arkteek.worsetagram.ui.screen.authentication
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import me.arkteek.worsetagram.domain.model.AuthResource
 import me.arkteek.worsetagram.domain.repository.AuthRepository
-import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
@@ -19,12 +20,17 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
   private val _signupFlow = MutableStateFlow<AuthResource<FirebaseUser>?>(null)
   val signupFlow: StateFlow<AuthResource<FirebaseUser>?> = _signupFlow
 
-  val currentUser: FirebaseUser?
-    get() = repository.currentUser
+  val currentUser: Flow<FirebaseUser?> = repository.user
 
   init {
-    if (repository.currentUser != null) {
-      _loginFlow.value = AuthResource.Success(repository.currentUser!!)
+    viewModelScope.launch {
+      repository.user.collect { user ->
+        if (user != null) {
+          _loginFlow.value = AuthResource.Success(user)
+        } else {
+          _loginFlow.value = null
+        }
+      }
     }
   }
 

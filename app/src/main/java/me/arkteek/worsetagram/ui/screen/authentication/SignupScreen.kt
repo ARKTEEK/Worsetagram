@@ -1,6 +1,5 @@
-package me.arkteek.worsetagram.ui.screen.auth
+package me.arkteek.worsetagram.ui.screen.authentication
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,9 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -30,39 +27,57 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.ROUTE_HOME
 import me.arkteek.worsetagram.common.ROUTE_LOGIN
 import me.arkteek.worsetagram.common.ROUTE_SIGNUP
 import me.arkteek.worsetagram.domain.model.AuthResource
-import me.arkteek.worsetagram.ui.theme.WorsetagramTheme
-import me.arkteek.worsetagram.ui.viewModel.AuthViewModel
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(viewModel: AuthViewModel?, navController: NavController) {
-
+fun SignupScreen(viewModel: AuthViewModel?, navController: NavHostController) {
+  var name by remember { mutableStateOf("") }
   var email by remember { mutableStateOf("") }
   var password by remember { mutableStateOf("") }
 
-  val authResource = viewModel?.loginFlow?.collectAsState()
+  val authResource = viewModel?.signupFlow?.collectAsState()
 
   ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-    val (refHeader, refEmail, refPassword, refButtonLogin, refTextSignup, refLoading) = createRefs()
+    val (refHeader, refName, refEmail, refPassword, refButtonSignup, refTextSignup, refLoading) =
+      createRefs()
 
     Box(
-      modifier = Modifier
-        .constrainAs(refHeader) {
-          top.linkTo(parent.top, 20.dp)
-          start.linkTo(parent.start)
-          end.linkTo(parent.end)
-          width = Dimension.fillToConstraints
-        }
-        .wrapContentSize()
+      modifier =
+        Modifier.constrainAs(refHeader) {
+            top.linkTo(parent.top, 20.dp)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            width = Dimension.fillToConstraints
+          }
+          .wrapContentSize()
     ) {
       AuthHeader()
     }
+
+    TextField(
+      value = name,
+      onValueChange = { name = it },
+      label = { Text(text = stringResource(id = R.string.name)) },
+      modifier =
+        Modifier.constrainAs(refName) {
+          top.linkTo(refHeader.bottom, 20.dp)
+          start.linkTo(parent.start, 30.dp)
+          end.linkTo(parent.end, 20.dp)
+          width = Dimension.fillToConstraints
+        },
+      keyboardOptions =
+        KeyboardOptions(
+          capitalization = KeyboardCapitalization.None,
+          autoCorrect = false,
+          keyboardType = KeyboardType.Email,
+          imeAction = ImeAction.Next,
+        ),
+    )
 
     TextField(
       value = email,
@@ -70,7 +85,7 @@ fun LoginScreen(viewModel: AuthViewModel?, navController: NavController) {
       label = { Text(text = stringResource(id = R.string.email)) },
       modifier =
         Modifier.constrainAs(refEmail) {
-          top.linkTo(refHeader.bottom, 20.dp)
+          top.linkTo(refName.bottom, 20.dp)
           start.linkTo(parent.start, 30.dp)
           end.linkTo(parent.end, 20.dp)
           width = Dimension.fillToConstraints
@@ -106,29 +121,32 @@ fun LoginScreen(viewModel: AuthViewModel?, navController: NavController) {
     )
 
     Button(
-      onClick = { viewModel?.loginUser(email, password) },
+      onClick = { viewModel?.singupUser(name, email, password) },
       modifier =
-        Modifier.constrainAs(refButtonLogin) {
+        Modifier.constrainAs(refButtonSignup) {
           top.linkTo(refPassword.bottom, 20.dp)
           start.linkTo(parent.start, 30.dp)
           end.linkTo(parent.end, 20.dp)
           width = Dimension.fillToConstraints
         },
     ) {
-      Text(text = stringResource(id = R.string.login), style = MaterialTheme.typography.titleMedium)
+      Text(
+        text = stringResource(id = R.string.signup),
+        style = MaterialTheme.typography.titleMedium,
+      )
     }
 
     Text(
-      modifier = Modifier
-        .constrainAs(refTextSignup) {
-          top.linkTo(refButtonLogin.bottom, 20.dp)
-          start.linkTo(parent.start, 30.dp)
-          end.linkTo(parent.end, 20.dp)
-        }
-        .clickable {
-          navController.navigate(ROUTE_SIGNUP) { popUpTo(ROUTE_LOGIN) { inclusive = true } }
-        },
-      text = stringResource(id = R.string.dont_have_account),
+      modifier =
+        Modifier.constrainAs(refTextSignup) {
+            top.linkTo(refButtonSignup.bottom, 20.dp)
+            start.linkTo(parent.start, 30.dp)
+            end.linkTo(parent.end, 20.dp)
+          }
+          .clickable {
+            navController.navigate(ROUTE_LOGIN) { popUpTo(ROUTE_SIGNUP) { inclusive = true } }
+          },
+      text = stringResource(id = R.string.already_have_account),
       style = MaterialTheme.typography.bodyLarge,
       textAlign = TextAlign.Center,
       color = MaterialTheme.colorScheme.onSurface,
@@ -152,7 +170,7 @@ fun LoginScreen(viewModel: AuthViewModel?, navController: NavController) {
         }
         is AuthResource.Success -> {
           LaunchedEffect(Unit) {
-            navController.navigate(ROUTE_HOME) { popUpTo(ROUTE_LOGIN) { inclusive = true } }
+            navController.navigate(ROUTE_HOME) { popUpTo(ROUTE_SIGNUP) { inclusive = true } }
           }
         }
       }
