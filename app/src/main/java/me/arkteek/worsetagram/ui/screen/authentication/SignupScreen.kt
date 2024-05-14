@@ -29,9 +29,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.common.ROUTE_HOME
-import me.arkteek.worsetagram.common.ROUTE_LOGIN
-import me.arkteek.worsetagram.common.ROUTE_SIGNUP
+import me.arkteek.worsetagram.common.constants.ROUTE_HOME
+import me.arkteek.worsetagram.common.constants.ROUTE_LOGIN
+import me.arkteek.worsetagram.common.constants.ROUTE_SIGNUP
 import me.arkteek.worsetagram.domain.model.AuthResource
 
 @Composable

@@ -7,7 +7,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import me.arkteek.worsetagram.common.await
+import me.arkteek.worsetagram.common.utilities.await
 import me.arkteek.worsetagram.domain.model.AuthResource
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.AuthRepository

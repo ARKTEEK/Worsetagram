@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.common
+package me.arkteek.worsetagram.common.utilities
 
 import com.google.android.gms.tasks.Task
 import kotlin.coroutines.resumeWithException

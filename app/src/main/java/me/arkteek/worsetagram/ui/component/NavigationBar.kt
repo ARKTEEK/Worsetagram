@@ -16,11 +16,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.common.ROUTE_CHAT
-import me.arkteek.worsetagram.common.ROUTE_HOME
-import me.arkteek.worsetagram.common.ROUTE_NEW_POST
-import me.arkteek.worsetagram.common.ROUTE_PROFILE
-import me.arkteek.worsetagram.common.ROUTE_SEARCH
+import me.arkteek.worsetagram.common.constants.ROUTE_CHAT
+import me.arkteek.worsetagram.common.constants.ROUTE_HOME
+import me.arkteek.worsetagram.common.constants.ROUTE_NEW_POST
+import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE
+import me.arkteek.worsetagram.common.constants.ROUTE_SEARCH
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {

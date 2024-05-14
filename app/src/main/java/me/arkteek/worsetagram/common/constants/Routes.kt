@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.common
+package me.arkteek.worsetagram.common.constants
 
 const val ROUTE_LOGIN = "login"
 const val ROUTE_SIGNUP = "signup"

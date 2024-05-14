@@ -9,9 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import me.arkteek.worsetagram.ui.AppNavHost
-import me.arkteek.worsetagram.ui.theme.WorsetagramTheme
+import me.arkteek.worsetagram.ui.navigation.AppNavHost
 import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
+import me.arkteek.worsetagram.ui.theme.WorsetagramTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

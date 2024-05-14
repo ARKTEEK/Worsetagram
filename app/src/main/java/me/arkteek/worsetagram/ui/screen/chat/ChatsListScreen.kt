@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.common.ROUTE_CHAT
+import me.arkteek.worsetagram.common.constants.ROUTE_CHAT
 import me.arkteek.worsetagram.domain.model.ChatItem
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
@@ -51,41 +51,44 @@ fun ChatListScreen(viewModel: AuthViewModel?, navController: NavHostController) 
       topBar = {
         HeaderBar(
           title = "Messages",
-          customActions = listOf {
-            IconButton(onClick = {}) {
-              Icon(
-                painter = painterResource(R.drawable.ic_send),
-                contentDescription = "New Message",
-                modifier = Modifier.size(24.dp),
-              )
-            }
-          },
+          customActions =
+            listOf {
+              IconButton(onClick = {}) {
+                Icon(
+                  painter = painterResource(R.drawable.ic_send),
+                  contentDescription = "New Message",
+                  modifier = Modifier.size(24.dp),
+                )
+              }
+            },
         )
       },
       bottomBar = { BottomNavigationBar(navController) },
     ) { paddingValues ->
       Column(
-        modifier = Modifier.padding(paddingValues).fillMaxSize()
-          .verticalScroll(rememberScrollState())
+        modifier =
+          Modifier.padding(paddingValues).fillMaxSize().verticalScroll(rememberScrollState())
       ) {
         var searchText by remember { mutableStateOf("") }
 
         SearchBar(
           searchText = searchText,
-          onSearchTextChanged = { newText -> searchText = newText })
-
-        val messages = listOf(
-          ChatItem(
-            avatar = "https://i.imgur.com/oNxrcG0.jpeg",
-            name = "Petras Jonutis",
-            lastMessage = "Bye!",
-          ),
-          ChatItem(
-            avatar = "https://i.imgur.com/oNxrcG0.jpeg",
-            name = "Jonas Petrautis",
-            lastMessage = "Dummy message...",
-          ),
+          onSearchTextChanged = { newText -> searchText = newText },
         )
+
+        val messages =
+          listOf(
+            ChatItem(
+              avatar = "https://i.imgur.com/oNxrcG0.jpeg",
+              name = "Petras Jonutis",
+              lastMessage = "Bye!",
+            ),
+            ChatItem(
+              avatar = "https://i.imgur.com/oNxrcG0.jpeg",
+              name = "Jonas Petrautis",
+              lastMessage = "Dummy message...",
+            ),
+          )
 
         ChatsTab(chats = messages) { navController.navigate(ROUTE_CHAT) }
       }
