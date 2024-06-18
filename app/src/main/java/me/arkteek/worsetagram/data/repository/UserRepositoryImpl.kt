@@ -1,6 +1,7 @@
 package me.arkteek.worsetagram.data.repository
 
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 import javax.inject.Provider
@@ -22,7 +23,7 @@ constructor(
     get() = authRepository.get().user
 
   override suspend fun get(id: String): Flow<User?> = flow {
-    val userDocument = database.collection("users").document(id).get().await()
+    val userDocument = database.collection(COLLECTION_USERS).document(id).get().await()
     val user = userDocument.toObject(User::class.java)
     emit(user)
   }
@@ -34,5 +35,31 @@ constructor(
 
   override suspend fun remove(id: String) {
     database.collection(COLLECTION_USERS).document(id).delete().await()
+  }
+
+  override suspend fun follow(currentUserId: String, targetUserId: String) {
+    database
+      .collection(COLLECTION_USERS)
+      .document(currentUserId)
+      .update("following", FieldValue.arrayUnion(targetUserId))
+      .await()
+
+    database
+      .collection(COLLECTION_USERS)
+      .document(targetUserId)
+      .update("followers", FieldValue.arrayUnion(currentUserId))
+  }
+
+  override suspend fun unfollow(currentUserId: String, targetUserId: String) {
+    database
+      .collection(COLLECTION_USERS)
+      .document(currentUserId)
+      .update("following", FieldValue.arrayRemove(targetUserId))
+      .await()
+
+    database
+      .collection(COLLECTION_USERS)
+      .document(targetUserId)
+      .update("followers", FieldValue.arrayRemove(currentUserId))
   }
 }

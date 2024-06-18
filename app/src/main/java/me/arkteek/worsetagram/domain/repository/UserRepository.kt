@@ -12,4 +12,8 @@ interface UserRepository {
   suspend fun merge(user: User)
 
   suspend fun remove(id: String)
+
+  suspend fun follow(currentUserId: String, targetUserId: String)
+
+  suspend fun unfollow(currentUserId: String, targetUserId: String)
 }
