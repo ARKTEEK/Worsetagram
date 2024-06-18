@@ -48,7 +48,7 @@ fun HomeScreen(viewModel: AuthViewModel?, navController: NavHostController) {
       topBar = {
         HeaderBar(
           title = "Worsetagram",
-          customActions =
+          rightActions =
             listOf {
               IconButton(onClick = {}) {
                 Icon(
@@ -111,7 +111,7 @@ fun PostSection(postModel: Post) {
         Modifier.fillMaxWidth().padding(start = 6.dp, end = 6.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-        Column(Modifier.weight(1f).padding(end = 16.dp)) {
+        Column(Modifier.weight(1f).padding(end = 16.dp).clickable {}) {
           AsyncImage(
             model = "https://i.imgur.com/oNxrcG0.jpeg",
             contentDescription = null,
@@ -123,6 +123,7 @@ fun PostSection(postModel: Post) {
         Column(Modifier.weight(6f).padding(end = 16.dp)) {
           Text(text = postModel.author, fontWeight = FontWeight.Normal, fontSize = 12.sp)
         }
+
         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
           Icon(Icons.Default.MoreVert, contentDescription = null, modifier = Modifier.size(26.dp))
         }

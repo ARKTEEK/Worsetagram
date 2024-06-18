@@ -51,7 +51,7 @@ fun ChatListScreen(viewModel: AuthViewModel?, navController: NavHostController) 
       topBar = {
         HeaderBar(
           title = "Messages",
-          customActions =
+          leftActions =
             listOf {
               IconButton(onClick = {}) {
                 Icon(
