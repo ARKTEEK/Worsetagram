@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import me.arkteek.worsetagram.domain.model.AuthResource
 import me.arkteek.worsetagram.domain.repository.AuthRepository
-import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
@@ -41,10 +41,16 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
       _loginFlow.value = result
     }
 
-  fun singupUser(name: String, email: String, password: String) =
+  fun singupUser(
+    firstname: String,
+    lastname: String,
+    nickname: String,
+    email: String,
+    password: String,
+  ) =
     viewModelScope.launch {
       _signupFlow.value = AuthResource.Loading
-      val result = repository.signup(name, email, password)
+      val result = repository.signup(firstname, lastname, nickname, email, password)
       _signupFlow.value = result
     }
 

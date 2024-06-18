@@ -3,7 +3,6 @@ package me.arkteek.worsetagram.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -12,6 +11,7 @@ import me.arkteek.worsetagram.domain.model.AuthResource
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.AuthRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
+import javax.inject.Inject
 
 class AuthRepositoryImpl
 @Inject
@@ -37,17 +37,19 @@ constructor(private val firebaseAuth: FirebaseAuth, private val userRepository: 
   }
 
   override suspend fun signup(
-    name: String,
+    firstname: String,
+    lastname: String,
+    nickname: String,
     email: String,
     password: String,
   ): AuthResource<FirebaseUser> {
     return try {
       val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
       result.user
-        ?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
+        ?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(nickname).build())
         ?.await()
 
-      val user = User(result.user?.uid, name, email)
+      val user = User(result.user?.uid, email, firstname, lastname, nickname)
       userRepository.merge(user)
 
       return AuthResource.Success(result.user!!)

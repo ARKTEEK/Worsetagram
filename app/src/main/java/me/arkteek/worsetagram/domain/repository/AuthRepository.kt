@@ -9,7 +9,13 @@ interface AuthRepository {
 
   suspend fun login(email: String, password: String): AuthResource<FirebaseUser>
 
-  suspend fun signup(name: String, email: String, password: String): AuthResource<FirebaseUser>
+  suspend fun signup(
+    firstname: String,
+    lastname: String,
+    nickname: String,
+    email: String,
+    password: String,
+  ): AuthResource<FirebaseUser>
 
   fun logout()
 }
