@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.domain.model
+package me.arkteek.worsetagram.data.source.remote
 
 sealed class AuthResource<out R> {
   data class Success<out R>(val result: R) : AuthResource<R>()

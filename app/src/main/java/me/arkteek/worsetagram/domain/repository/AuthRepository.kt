@@ -2,7 +2,7 @@ package me.arkteek.worsetagram.domain.repository
 
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
-import me.arkteek.worsetagram.domain.model.AuthResource
+import me.arkteek.worsetagram.data.source.remote.AuthResource
 
 interface AuthRepository {
   val user: Flow<FirebaseUser?>
