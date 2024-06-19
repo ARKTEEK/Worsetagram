@@ -28,6 +28,7 @@ navigationCompose = "2.7.7"
 retrofit = "2.9.0"
 firebaseFirestore = "25.0.0"
 firebaseStorage = "21.0.0"
+runtimeLivedata = "1.6.8"
 
 [libraries]
 accompanist-systemuicontroller-v0270 = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -68,6 +69,7 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 
 [plugins]
