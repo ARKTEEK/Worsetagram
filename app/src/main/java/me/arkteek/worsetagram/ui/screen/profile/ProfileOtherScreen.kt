@@ -49,12 +49,13 @@ import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.ProfileCount
 import me.arkteek.worsetagram.ui.component.RoundIconButton
 import me.arkteek.worsetagram.ui.screen.LoadingScreen
+import me.arkteek.worsetagram.ui.viewmodel.ProfileOtherViewModel
 
 @Composable
 fun ProfileOtherScreen(
-  viewModel: ProfileOtherViewModel = hiltViewModel(),
-  navController: NavHostController,
-  ownerUID: String,
+    viewModel: ProfileOtherViewModel = hiltViewModel(),
+    navController: NavHostController,
+    ownerUID: String,
 ) {
   val firebaseViewerUser by viewModel.firebaseViewerUser.collectAsState()
   val userViewer by viewModel.viewerUser.collectAsState()
@@ -108,10 +109,10 @@ fun ProfileOtherScreen(
 
 @Composable
 private fun ProfileContent(
-  userOwner: User?,
-  userViewer: User?,
-  viewModel: ProfileOtherViewModel,
-  modifier: Modifier = Modifier,
+    userOwner: User?,
+    userViewer: User?,
+    viewModel: ProfileOtherViewModel,
+    modifier: Modifier = Modifier,
 ) {
   val isViewerFollowing by viewModel.isFollowing.collectAsState()
 

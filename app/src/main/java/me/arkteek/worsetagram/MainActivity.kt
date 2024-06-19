@@ -10,7 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 import me.arkteek.worsetagram.ui.navigation.AppNavHost
-import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
+import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
 import me.arkteek.worsetagram.ui.theme.WorsetagramTheme
 
 @AndroidEntryPoint

@@ -1,16 +1,17 @@
-package me.arkteek.worsetagram.ui.screen.profile
+package me.arkteek.worsetagram.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import me.arkteek.worsetagram.common.utilities.await
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.AuthRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
-import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel
@@ -32,10 +33,26 @@ constructor(
     viewModelScope.launch {
       authRepository.user.collect { firebaseUser ->
         _firebaseUser.value = firebaseUser
-        firebaseUser?.uid?.let { userId ->
-          userRepository.get(userId).collect { _user.value = it }
-        }
+        firebaseUser?.uid?.let { userId -> userRepository.get(userId).collect { _user.value = it } }
       }
+    }
+  }
+
+  fun updateUserDetails(updatedUser: User, newEmail: String? = null) {
+    viewModelScope.launch {
+      try {
+        userRepository.merge(updatedUser)
+        _user.value = updatedUser
+
+        firebaseUser.value?.let { firebaseUser ->
+          newEmail
+            ?.takeIf { it.isNotEmpty() }
+            ?.let { email -> firebaseUser.updateEmail(email).await() }
+          //          newPassword.takeIf { it.isNotEmpty() }?.let { password ->
+          //            firebaseUser.updatePassword(password).await()
+          //          }
+        }
+      } catch (_: Exception) {}
     }
   }
 }
