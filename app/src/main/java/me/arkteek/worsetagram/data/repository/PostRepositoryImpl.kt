@@ -1,6 +1,5 @@
 package me.arkteek.worsetagram.data.repository
 
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -38,19 +37,82 @@ class PostRepositoryImpl @Inject constructor(private val database: FirebaseFires
   }
 
   override suspend fun addLike(postId: String, userId: String) {
-    database
-      .collection(COLLECTION_POSTS)
-      .document(postId)
-      .update("likes", FieldValue.arrayUnion(userId))
-      .await()
+    try {
+      val querySnapshot =
+        database.collection(COLLECTION_POSTS).whereEqualTo("uid", postId).get().await()
+
+      if (querySnapshot.isEmpty) {
+        throw IllegalStateException("Post not found for postId: $postId")
+      }
+
+      val documentSnapshot = querySnapshot.documents.first()
+      val postDocumentRef = database.collection(COLLECTION_POSTS).document(documentSnapshot.id)
+
+      database
+        .runTransaction { transaction ->
+          val post =
+            transaction.get(postDocumentRef).toObject(Post::class.java)
+              ?: throw Exception("Unable to retrieve post")
+
+          val updatedLikes = post.likes.toMutableList()
+          if (!updatedLikes.contains(userId)) {
+            updatedLikes.add(userId)
+            transaction.update(postDocumentRef, "likes", updatedLikes)
+          }
+        }
+        .await()
+    } catch (e: Exception) {
+      throw e
+    }
   }
 
   override suspend fun removeLike(postId: String, userId: String) {
-    database
-      .collection(COLLECTION_POSTS)
-      .document(postId)
-      .update("likes", FieldValue.arrayRemove(userId))
-      .await()
+    try {
+      val querySnapshot =
+        database.collection(COLLECTION_POSTS).whereEqualTo("uid", postId).get().await()
+
+      if (querySnapshot.isEmpty) {
+        throw IllegalStateException("Post not found for postId: $postId")
+      }
+
+      val documentSnapshot = querySnapshot.documents.first()
+      val postDocumentRef = database.collection(COLLECTION_POSTS).document(documentSnapshot.id)
+
+      database
+        .runTransaction { transaction ->
+          val post =
+            transaction.get(postDocumentRef).toObject(Post::class.java)
+              ?: throw Exception("Unable to retrieve post")
+
+          val updatedLikes = post.likes.toMutableList()
+          if (updatedLikes.contains(userId)) {
+            updatedLikes.remove(userId)
+            transaction.update(postDocumentRef, "likes", updatedLikes)
+          }
+        }
+        .await()
+    } catch (e: Exception) {
+      throw e
+    }
+  }
+
+  override suspend fun hasLikedPost(postId: String, userId: String): Boolean {
+    try {
+      val querySnapshot =
+        database.collection(COLLECTION_POSTS).whereEqualTo("uid", postId).get().await()
+
+      if (querySnapshot.isEmpty) {
+        throw IllegalStateException("Post not found for postId: $postId")
+      }
+
+      val documentSnapshot = querySnapshot.documents.first()
+      val post =
+        documentSnapshot.toObject(Post::class.java) ?: throw Exception("Unable to retrieve post")
+
+      return post.likes.contains(userId)
+    } catch (e: Exception) {
+      throw e
+    }
   }
 
   override suspend fun addComment(postId: String, comment: Comment) {
@@ -78,17 +140,5 @@ class PostRepositoryImpl @Inject constructor(private val database: FirebaseFires
         transaction.update(postRef, "comments", updatedComments)
       }
       .await()
-  }
-
-  override suspend fun hasLikedPost(postId: String, userId: String): Boolean {
-    val snapshot =
-      database
-        .collection(COLLECTION_POSTS)
-        .document(postId)
-        .collection("likes")
-        .document(userId)
-        .get()
-        .await()
-    return snapshot.exists()
   }
 }
