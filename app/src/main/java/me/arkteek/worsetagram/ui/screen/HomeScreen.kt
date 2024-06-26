@@ -24,7 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -118,7 +118,7 @@ fun PostSection(
   navController: NavHostController,
 ) {
   val isLiked by viewModel.getLikedStatus(post.uid).observeAsState(false)
-  var likesCount by remember { mutableStateOf(post.likes.size) }
+  var likesCount by remember { mutableIntStateOf(post.likes.size) }
 
   LaunchedEffect(isLiked) { likesCount = if (isLiked) post.likes.size + 1 else post.likes.size }
 
@@ -182,7 +182,7 @@ fun PostSection(
             )
           }
 
-          IconButton(onClick = { navController.navigate("post/${post.uid}") }) {
+          IconButton(onClick = { navController.navigate("comments/${post.uid}") }) {
             Icon(
               painter = painterResource(R.drawable.ic_comment),
               contentDescription = "Comment Icon",

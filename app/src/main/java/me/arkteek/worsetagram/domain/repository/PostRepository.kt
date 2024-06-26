@@ -9,11 +9,15 @@ interface PostRepository {
 
   fun getPost(postId: String): Flow<Post?>
 
+  fun getUserPosts(userId: String): Flow<List<Post>>
+
   suspend fun createPost(post: Post)
 
   suspend fun updatePost(post: Post)
 
   suspend fun deletePost(postId: String)
+
+  suspend fun getCommentsForPost(postId: String): List<Comment>
 
   suspend fun addLike(postId: String, userId: String)
 

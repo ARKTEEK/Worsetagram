@@ -4,8 +4,8 @@ data class Post(
   val uid: String = "",
   val authorUID: String = "",
   val description: String = "",
-  val likes: List<String> = emptyList(),
+  val likes: List<Any> = emptyList(),
   val images: List<String> = emptyList(),
-  val comments: Map<String, Comment> = emptyMap(),
+  val comments: List<Comment> = emptyList(),
   val timestamp: Long = 0L,
 )

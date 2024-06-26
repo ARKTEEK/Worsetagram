@@ -1,7 +1,6 @@
 package me.arkteek.worsetagram.data.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import me.arkteek.worsetagram.common.constants.COLLECTION_POSTS
@@ -9,6 +8,7 @@ import me.arkteek.worsetagram.common.utilities.await
 import me.arkteek.worsetagram.domain.model.Comment
 import me.arkteek.worsetagram.domain.model.Post
 import me.arkteek.worsetagram.domain.repository.PostRepository
+import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(private val database: FirebaseFirestore) :
   PostRepository {
@@ -19,9 +19,17 @@ class PostRepositoryImpl @Inject constructor(private val database: FirebaseFires
   }
 
   override fun getPost(postId: String): Flow<Post?> = flow {
-    val postDocument = database.collection(COLLECTION_POSTS).document(postId).get().await()
-    val post = postDocument.toObject(Post::class.java)
+    val querySnapshot =
+      database.collection(COLLECTION_POSTS).whereEqualTo("uid", postId).get().await()
+    val post = querySnapshot.documents.firstOrNull()?.toObject(Post::class.java)
     emit(post)
+  }
+
+  override fun getUserPosts(userId: String): Flow<List<Post>> = flow {
+    val snapshot =
+      database.collection(COLLECTION_POSTS).whereEqualTo("authorUID", userId).get().await()
+    val posts = snapshot.documents.mapNotNull { it.toObject(Post::class.java) }
+    emit(posts)
   }
 
   override suspend fun createPost(post: Post) {
@@ -33,7 +41,40 @@ class PostRepositoryImpl @Inject constructor(private val database: FirebaseFires
   }
 
   override suspend fun deletePost(postId: String) {
-    database.collection(COLLECTION_POSTS).document(postId).delete().await()
+    try {
+      val querySnapshot =
+        database.collection(COLLECTION_POSTS).whereEqualTo("uid", postId).get().await()
+
+      if (querySnapshot.isEmpty) {
+        throw IllegalStateException("Post not found for uid: $postId")
+      }
+
+      val documentSnapshot = querySnapshot.documents.first()
+      val postDocumentRef = database.collection(COLLECTION_POSTS).document(documentSnapshot.id)
+      postDocumentRef.delete().await()
+    } catch (e: Exception) {
+      throw e
+    }
+  }
+
+  override suspend fun getCommentsForPost(postId: String): List<Comment> {
+    val commentsList = mutableListOf<Comment>()
+
+    try {
+      val querySnapshot =
+        database.collection(COLLECTION_POSTS).whereEqualTo("uid", postId).get().await()
+
+      for (document in querySnapshot.documents) {
+        val post = document.toObject(Post::class.java)
+        if (post != null) {
+          commentsList.addAll(post.comments)
+        }
+      }
+    } catch (e: Exception) {
+      throw e
+    }
+
+    return commentsList
   }
 
   override suspend fun addLike(postId: String, userId: String) {
@@ -116,17 +157,30 @@ class PostRepositoryImpl @Inject constructor(private val database: FirebaseFires
   }
 
   override suspend fun addComment(postId: String, comment: Comment) {
-    val postRef = database.collection(COLLECTION_POSTS).document(postId)
-    database
-      .runTransaction { transaction ->
-        val snapshot = transaction.get(postRef)
-        val post = snapshot.toObject(Post::class.java) ?: throw Exception("Post not found")
-        val updatedComments = post.comments.toMutableMap()
-        val commentId = database.collection("comments").document().id
-        updatedComments[commentId] = comment
-        transaction.update(postRef, "comments", updatedComments)
+    try {
+      val querySnapshot =
+        database.collection(COLLECTION_POSTS).whereEqualTo("uid", postId).get().await()
+
+      if (querySnapshot.isEmpty) {
+        throw IllegalStateException("Post not found for postId: $postId")
       }
-      .await()
+
+      val documentSnapshot = querySnapshot.documents.first()
+      val postRef = database.collection(COLLECTION_POSTS).document(documentSnapshot.id)
+
+      database
+        .runTransaction { transaction ->
+          val snapshot = transaction.get(postRef)
+          val post = snapshot.toObject(Post::class.java) ?: throw Exception("Post not found")
+          val updatedComments = post.comments.toMutableList()
+          val commentId = database.collection("comments").document().id
+          updatedComments.add(comment)
+          transaction.update(postRef, "comments", updatedComments)
+        }
+        .await()
+    } catch (e: Exception) {
+      throw e
+    }
   }
 
   override suspend fun deleteComment(postId: String, commentId: String) {
@@ -135,8 +189,8 @@ class PostRepositoryImpl @Inject constructor(private val database: FirebaseFires
       .runTransaction { transaction ->
         val snapshot = transaction.get(postRef)
         val post = snapshot.toObject(Post::class.java) ?: throw Exception("Post not found")
-        val updatedComments = post.comments.toMutableMap()
-        updatedComments.remove(commentId)
+        val updatedComments = post.comments.toMutableList()
+        //        updatedComments.remove(commentId)
         transaction.update(postRef, "comments", updatedComments)
       }
       .await()
