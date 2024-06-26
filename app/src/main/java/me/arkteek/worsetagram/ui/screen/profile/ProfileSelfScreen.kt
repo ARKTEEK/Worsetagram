@@ -19,6 +19,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,13 +41,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
+import me.arkteek.worsetagram.common.constants.ROUTE_LOGIN
+import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE_SETTINGS
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
+import me.arkteek.worsetagram.ui.component.ProfileCount
 import me.arkteek.worsetagram.ui.screen.LoadingScreen
+import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
+import me.arkteek.worsetagram.ui.viewmodel.ProfileViewModel
 
 @Composable
 fun ProfileSelfScreen(
+  authViewModel: AuthViewModel,
   viewModel: ProfileViewModel = hiltViewModel(),
   navController: NavHostController,
 ) {
@@ -55,7 +62,7 @@ fun ProfileSelfScreen(
 
   var isLoading by remember { mutableStateOf(true) }
 
-  LaunchedEffect(key1 = viewModel) { isLoading = true }
+  LaunchedEffect(viewModel) { isLoading = true }
 
   if (firebaseUser != null && user != null) {
 
@@ -63,11 +70,16 @@ fun ProfileSelfScreen(
       topBar = {
         HeaderBar(
           title = "Profile",
-          customActions =
+          rightActions =
             listOf {
-              IconButton(onClick = {}) {
+              IconButton(
+                onClick = {
+                  authViewModel.logout()
+                  navController.navigate(ROUTE_LOGIN)
+                }
+              ) {
                 Icon(
-                  painter = painterResource(R.drawable.ic_settings),
+                  painter = painterResource(R.drawable.ic_logout),
                   contentDescription = "Settings",
                   modifier = Modifier.size(24.dp),
                 )
@@ -77,7 +89,9 @@ fun ProfileSelfScreen(
       },
       bottomBar = { BottomNavigationBar(navController) },
       content = { paddingValues ->
-        ProfileContent(user, modifier = Modifier.padding(paddingValues))
+        Surface(color = Color.White) {
+          ProfileContent(user, modifier = Modifier.padding(paddingValues), navController)
+        }
       },
     )
   } else {
@@ -93,14 +107,18 @@ fun ProfileSelfScreen(
 }
 
 @Composable
-private fun ProfileContent(userDetails: User?, modifier: Modifier = Modifier) {
+private fun ProfileContent(
+  userDetails: User?,
+  modifier: Modifier = Modifier,
+  navController: NavHostController,
+) {
   Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
     Row(
       modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       AsyncImage(
-        model = "https://i.imgur.com/oNxrcG0.jpeg",
+        model = "https://i.imgur.com/2jzUqgr.png",
         contentDescription = "Profile Picture",
         modifier = Modifier.size(75.dp).clip(CircleShape),
         contentScale = ContentScale.Crop,
@@ -122,7 +140,7 @@ private fun ProfileContent(userDetails: User?, modifier: Modifier = Modifier) {
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Button(
-        onClick = { /* TODO: Handle follow action */ },
+        onClick = { navController.navigate(ROUTE_PROFILE_SETTINGS) },
         colors = ButtonDefaults.buttonColors(Color(0xFF1E88E5)),
         modifier = Modifier.height(45.dp).width(220.dp),
       ) {
@@ -137,19 +155,11 @@ private fun ProfileContent(userDetails: User?, modifier: Modifier = Modifier) {
       horizontalArrangement = Arrangement.SpaceEvenly,
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      ProfileCount(text = "Followers", count = "100K")
-      ProfileCount(text = "Following", count = "200")
-      ProfileCount(text = "Posts", count = "50")
+      ProfileCount(text = "Followers", count = userDetails?.followers?.count()?.toString() ?: "0")
+      ProfileCount(text = "Following", count = userDetails?.following?.count()?.toString() ?: "0")
+      ProfileCount(text = "Posts", count = "0")
     }
 
     Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 16.dp))
-  }
-}
-
-@Composable
-private fun ProfileCount(text: String, count: String) {
-  Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(16.dp)) {
-    Text(text = count, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-    Text(text = text, fontSize = 16.sp, color = Color.Gray)
   }
 }

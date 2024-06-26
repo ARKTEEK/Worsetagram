@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen
+package me.arkteek.worsetagram.ui.screen.post
 
 import android.net.Uri
 import android.widget.Toast
@@ -20,10 +20,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,6 +47,7 @@ import coil.compose.rememberImagePainter
 import kotlinx.coroutines.launch
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.constants.ROUTE_HOME
+import me.arkteek.worsetagram.ui.screen.LoadingScreen
 import me.arkteek.worsetagram.ui.viewmodel.CreatePostState
 import me.arkteek.worsetagram.ui.viewmodel.PostCreationViewModel
 
@@ -73,9 +76,10 @@ fun PostCreationScreen(
     Scaffold(
       topBar = {
         TopAppBar(
+          colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.White),
           title = {},
           navigationIcon = {
-            IconButton(onClick = { navController.navigate(ROUTE_HOME) }) {
+            IconButton(onClick = { navController.popBackStack() }) {
               Icon(
                 painter = painterResource(R.drawable.ic_back),
                 contentDescription = "Back button",
@@ -102,57 +106,62 @@ fun PostCreationScreen(
         )
       },
       content = { paddingValues ->
-        Column(
-          modifier = Modifier.padding(paddingValues).fillMaxSize(),
-          verticalArrangement = Arrangement.Top,
-          horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-          Text(text = "${selectedImages.size} photos selected", modifier = Modifier.padding(16.dp))
-
-          LazyRow(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        Surface(color = Color.White) {
+          Column(
+            modifier = Modifier.padding(paddingValues).fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
           ) {
-            items(selectedImages) { uri ->
-              Image(
-                painter = rememberImagePainter(uri),
-                contentDescription = null,
-                modifier = Modifier.size(100.dp),
-              )
-            }
-          }
+            Text(
+              text = "${selectedImages.size} photos selected",
+              modifier = Modifier.padding(16.dp),
+            )
 
-          Button(onClick = { launcher.launch("image/*") }) { Text(text = "Select Images") }
-
-          TextField(
-            value = description,
-            onValueChange = { description = it },
-            placeholder = { Text("What's happening?", color = Color.Gray) },
-            modifier = Modifier.fillMaxWidth().padding(16.dp).background(Color.Transparent),
-            colors =
-              TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-              ),
-          )
-
-          if (createPostState is CreatePostState.Loading) {
-            CircularProgressIndicator()
-          }
-
-          when (createPostState) {
-            CreatePostState.Success -> {
-              navController.navigate(ROUTE_HOME)
+            LazyRow(
+              modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+              horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+              items(selectedImages) { uri ->
+                Image(
+                  painter = rememberImagePainter(uri),
+                  contentDescription = null,
+                  modifier = Modifier.size(100.dp),
+                )
+              }
             }
-            is CreatePostState.Error -> {
-              Text(text = "Error: ${(createPostState as CreatePostState.Error).message}")
+
+            Button(onClick = { launcher.launch("image/*") }) { Text(text = "Select Images") }
+
+            TextField(
+              value = description,
+              onValueChange = { description = it },
+              placeholder = { Text("What's happening?", color = Color.Gray) },
+              modifier = Modifier.fillMaxWidth().padding(16.dp).background(Color.Transparent),
+              colors =
+                TextFieldDefaults.colors(
+                  focusedContainerColor = Color.Transparent,
+                  unfocusedContainerColor = Color.Transparent,
+                  focusedIndicatorColor = Color.Transparent,
+                  unfocusedIndicatorColor = Color.Transparent,
+                ),
+            )
+
+            if (createPostState is CreatePostState.Loading) {
+              CircularProgressIndicator()
             }
-            CreatePostState.Loading -> {
-              LoadingScreen()
+
+            when (createPostState) {
+              CreatePostState.Success -> {
+                navController.navigate(ROUTE_HOME)
+              }
+              is CreatePostState.Error -> {
+                Text(text = "Error: ${(createPostState as CreatePostState.Error).message}")
+              }
+              CreatePostState.Loading -> {
+                LoadingScreen()
+              }
+              CreatePostState.Initial -> {}
             }
-            CreatePostState.Initial -> {}
           }
         }
       },

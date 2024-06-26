@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,7 +43,7 @@ import me.arkteek.worsetagram.domain.model.ChatItem
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.SearchBar
-import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
+import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
 
 @Composable
 fun ChatListScreen(viewModel: AuthViewModel?, navController: NavHostController) {
@@ -51,7 +52,7 @@ fun ChatListScreen(viewModel: AuthViewModel?, navController: NavHostController) 
       topBar = {
         HeaderBar(
           title = "Messages",
-          leftActions =
+          rightActions =
             listOf {
               IconButton(onClick = {}) {
                 Icon(
@@ -64,35 +65,35 @@ fun ChatListScreen(viewModel: AuthViewModel?, navController: NavHostController) 
         )
       },
       bottomBar = { BottomNavigationBar(navController) },
-    ) { paddingValues ->
-      Column(
-        modifier =
-          Modifier.padding(paddingValues).fillMaxSize().verticalScroll(rememberScrollState())
-      ) {
-        var searchText by remember { mutableStateOf("") }
+      content = { paddingValues ->
+        Surface(color = Color.White, modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+          Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+            var searchText by remember { mutableStateOf("") }
 
-        SearchBar(
-          searchText = searchText,
-          onSearchTextChanged = { newText -> searchText = newText },
-        )
+            SearchBar(
+              searchText = searchText,
+              onSearchTextChanged = { newText -> searchText = newText },
+            )
 
-        val messages =
-          listOf(
-            ChatItem(
-              avatar = "https://i.imgur.com/oNxrcG0.jpeg",
-              name = "Petras Jonutis",
-              lastMessage = "Bye!",
-            ),
-            ChatItem(
-              avatar = "https://i.imgur.com/oNxrcG0.jpeg",
-              name = "Jonas Petrautis",
-              lastMessage = "Dummy message...",
-            ),
-          )
+            val messages =
+              listOf(
+                ChatItem(
+                  avatar = "https://i.imgur.com/oNxrcG0.jpeg",
+                  name = "Petras Jonutis",
+                  lastMessage = "Bye!",
+                ),
+                ChatItem(
+                  avatar = "https://i.imgur.com/oNxrcG0.jpeg",
+                  name = "Jonas Petrautis",
+                  lastMessage = "Dummy message...",
+                ),
+              )
 
-        ChatsTab(chats = messages) { navController.navigate(ROUTE_CHAT) }
-      }
-    }
+            ChatsTab(chats = messages) { navController.navigate(ROUTE_CHAT) }
+          }
+        }
+      },
+    )
   }
 }
 
