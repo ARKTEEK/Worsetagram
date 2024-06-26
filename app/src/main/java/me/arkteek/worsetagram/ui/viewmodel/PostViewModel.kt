@@ -89,7 +89,6 @@ constructor(
     }
   }
 
-
   fun addComment(commentText: String) {
     viewModelScope.launch {
       try {

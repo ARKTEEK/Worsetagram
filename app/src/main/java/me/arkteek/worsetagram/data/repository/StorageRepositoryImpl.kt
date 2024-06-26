@@ -4,10 +4,10 @@ import android.net.Uri
 import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
-import javax.inject.Inject
-import javax.inject.Singleton
 import me.arkteek.worsetagram.common.utilities.await
 import me.arkteek.worsetagram.domain.repository.StorageRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class StorageRepositoryImpl @Inject constructor(private val storage: FirebaseStorage) :

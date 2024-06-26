@@ -8,7 +8,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import me.arkteek.worsetagram.data.repository.AuthRepositoryImpl
 import me.arkteek.worsetagram.data.repository.PostRepositoryImpl
 import me.arkteek.worsetagram.data.repository.StorageRepositoryImpl
@@ -17,6 +16,7 @@ import me.arkteek.worsetagram.domain.repository.AuthRepository
 import me.arkteek.worsetagram.domain.repository.PostRepository
 import me.arkteek.worsetagram.domain.repository.StorageRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -8,8 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -20,6 +18,8 @@ import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.PostRepository
 import me.arkteek.worsetagram.domain.repository.StorageRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
+import java.util.UUID
+import javax.inject.Inject
 
 @HiltViewModel
 class PostCreationViewModel

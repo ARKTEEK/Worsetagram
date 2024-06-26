@@ -7,5 +7,5 @@ data class User(
   val lastname: String = "",
   val nickname: String = "",
   val followers: List<String> = emptyList(),
-  val following: List<String> = emptyList()
+  val following: List<String> = emptyList(),
 )

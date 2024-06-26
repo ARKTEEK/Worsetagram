@@ -15,7 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -148,7 +148,11 @@ private fun ProfileContent(
       }
     }
 
-    Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 16.dp))
+    HorizontalDivider(
+      modifier = Modifier.padding(vertical = 16.dp),
+      thickness = 1.dp,
+      color = Color.Gray
+    )
 
     Row(
       modifier = Modifier.fillMaxWidth(),
@@ -160,6 +164,10 @@ private fun ProfileContent(
       ProfileCount(text = "Posts", count = "0")
     }
 
-    Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 16.dp))
+    HorizontalDivider(
+      modifier = Modifier.padding(vertical = 16.dp),
+      thickness = 1.dp,
+      color = Color.Gray
+    )
   }
 }

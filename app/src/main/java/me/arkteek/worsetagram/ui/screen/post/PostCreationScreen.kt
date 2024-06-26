@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,7 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.launch
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.constants.ROUTE_HOME
@@ -76,7 +75,6 @@ fun PostCreationScreen(
     Scaffold(
       topBar = {
         TopAppBar(
-          colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.White),
           title = {},
           navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
@@ -123,7 +121,7 @@ fun PostCreationScreen(
             ) {
               items(selectedImages) { uri ->
                 Image(
-                  painter = rememberImagePainter(uri),
+                  painter = rememberAsyncImagePainter(uri),
                   contentDescription = null,
                   modifier = Modifier.size(100.dp),
                 )

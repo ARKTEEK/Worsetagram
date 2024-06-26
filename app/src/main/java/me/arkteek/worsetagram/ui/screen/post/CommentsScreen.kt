@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.utilities.getTimeDifference
 import me.arkteek.worsetagram.ui.component.HeaderBar
@@ -78,10 +78,10 @@ fun CommentScreen(
                 imageUrl = "https://i.imgur.com/2jzUqgr.png",
                 timeAgo = getTimeDifference(comment.timestamp),
               )
-              Divider()
+              HorizontalDivider()
             }
           }
-          Divider()
+          HorizontalDivider()
           Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextField(
               value = "",
@@ -111,7 +111,7 @@ fun CommentScreen(
 @Composable
 fun AvatarImage(imageUrl: String, modifier: Modifier = Modifier) {
   Image(
-    painter = rememberImagePainter(data = imageUrl),
+    painter = rememberAsyncImagePainter(model = imageUrl),
     contentDescription = null,
     modifier = modifier.size(40.dp).clip(CircleShape).background(Color.White),
     contentScale = ContentScale.Crop,

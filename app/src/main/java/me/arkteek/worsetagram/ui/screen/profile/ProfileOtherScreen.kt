@@ -15,10 +15,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,7 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE
+import me.arkteek.worsetagram.common.constants.ROUTE_CHAT
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.FollowButton
@@ -53,9 +54,9 @@ import me.arkteek.worsetagram.ui.viewmodel.ProfileOtherViewModel
 
 @Composable
 fun ProfileOtherScreen(
-    viewModel: ProfileOtherViewModel = hiltViewModel(),
-    navController: NavHostController,
-    ownerUID: String,
+  viewModel: ProfileOtherViewModel = hiltViewModel(),
+  navController: NavHostController,
+  ownerUID: String,
 ) {
   val firebaseViewerUser by viewModel.firebaseViewerUser.collectAsState()
   val userViewer by viewModel.viewerUser.collectAsState()
@@ -80,7 +81,7 @@ fun ProfileOtherScreen(
           title = "Profile",
           leftActions =
             listOf {
-              IconButton(onClick = { navController.navigate(ROUTE_PROFILE) }) {
+              IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                   painter = painterResource(R.drawable.ic_back),
                   contentDescription = "Back",
@@ -92,7 +93,15 @@ fun ProfileOtherScreen(
       },
       bottomBar = { BottomNavigationBar(navController) },
       content = { paddingValues ->
-        ProfileContent(userOwner, userViewer, viewModel, modifier = Modifier.padding(paddingValues))
+        Surface(color = Color.White) {
+          ProfileContent(
+            userOwner,
+            userViewer,
+            viewModel,
+            modifier = Modifier.padding(paddingValues),
+            navController,
+          )
+        }
       },
     )
   } else {
@@ -109,10 +118,11 @@ fun ProfileOtherScreen(
 
 @Composable
 private fun ProfileContent(
-    userOwner: User?,
-    userViewer: User?,
-    viewModel: ProfileOtherViewModel,
-    modifier: Modifier = Modifier,
+  userOwner: User?,
+  userViewer: User?,
+  viewModel: ProfileOtherViewModel,
+  modifier: Modifier = Modifier,
+  navController: NavHostController,
 ) {
   val isViewerFollowing by viewModel.isFollowing.collectAsState()
 
@@ -124,10 +134,7 @@ private fun ProfileContent(
       horizontalArrangement = Arrangement.Center,
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      RoundIconButton(
-        icon = Icons.Default.Email,
-        onClick = { /* TODO: Handle DM icon button click */ },
-      )
+      RoundIconButton(icon = Icons.Default.Email, onClick = { navController.navigate(ROUTE_CHAT) })
 
       Spacer(modifier = Modifier.width(16.dp))
 
@@ -154,7 +161,11 @@ private fun ProfileContent(
       )
     }
 
-    Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 16.dp))
+    HorizontalDivider(
+      modifier = Modifier.padding(vertical = 16.dp),
+      thickness = 1.dp,
+      color = Color.Gray,
+    )
 
     Row(
       modifier = Modifier.fillMaxWidth(),
@@ -163,10 +174,14 @@ private fun ProfileContent(
     ) {
       ProfileCount(text = "Followers", count = userOwner?.followers?.count()?.toString() ?: "0")
       ProfileCount(text = "Following", count = userOwner?.following?.count()?.toString() ?: "0")
-      ProfileCount(text = "Posts", count = "50")
+      ProfileCount(text = "Posts", count = "0")
     }
 
-    Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 16.dp))
+    HorizontalDivider(
+      modifier = Modifier.padding(vertical = 16.dp),
+      thickness = 1.dp,
+      color = Color.Gray,
+    )
   }
 }
 
@@ -179,7 +194,7 @@ private fun ProfileContentHeader(ownerUser: User?) {
       horizontalArrangement = Arrangement.Center,
     ) {
       AsyncImage(
-        model = "https://i.imgur.com/oNxrcG0.jpeg",
+        model = "https://i.imgur.com/2jzUqgr.png",
         contentDescription = "Profile Picture",
         modifier = Modifier.size(100.dp).clip(CircleShape),
         contentScale = ContentScale.Crop,

@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ProfileCount(text: String, count: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(16.dp)) {
-        Text(text = count, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Text(text = text, fontSize = 16.sp, color = Color.Gray)
-    }
+  Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(16.dp)) {
+    Text(text = count, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+    Text(text = text, fontSize = 16.sp, color = Color.Gray)
+  }
 }

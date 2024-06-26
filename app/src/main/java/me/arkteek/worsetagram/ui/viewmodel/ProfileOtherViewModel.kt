@@ -4,14 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.AuthRepository
+import me.arkteek.worsetagram.domain.repository.PostRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
+import javax.inject.Inject
 
 @HiltViewModel
 class ProfileOtherViewModel
@@ -19,6 +21,7 @@ class ProfileOtherViewModel
 constructor(
   private val authRepository: AuthRepository,
   private val userRepository: UserRepository,
+  private val postRepository: PostRepository,
 ) : ViewModel() {
 
   private val _firebaseViewerUser = MutableStateFlow<FirebaseUser?>(null)
@@ -74,5 +77,9 @@ constructor(
       userRepository.unfollow(currentUserId, targetUserId)
       _isFollowing.value = false
     }
+  }
+
+  suspend fun getPostAmount(userId: String): Int{
+    return postRepository.getUserPosts(userId).count()
   }
 }
