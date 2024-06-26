@@ -158,8 +158,8 @@ private fun ProfileSettingsContent(
     Spacer(modifier = Modifier.height(8.dp))
 
     OutlinedTextField(
-      value = "",
-      onValueChange = {},
+      value = oldPassword,
+      onValueChange = { oldPassword = it },
       label = { Text("Old Password") },
       visualTransformation = PasswordVisualTransformation(),
       modifier = Modifier.fillMaxWidth(),
@@ -183,7 +183,11 @@ private fun ProfileSettingsContent(
           userDetails?.copy(firstname = firstName, lastname = lastName, email = email)
 
         if (updatedUser != null) {
-          viewModel.updateUserDetails(updatedUser, newEmail = email.takeIf { it.isNotEmpty() })
+          viewModel.updateUserDetails(
+            updatedUser,
+            newEmail = email.takeIf { it.isNotEmpty() },
+            newPassword = newPassword.takeIf { it.isNotEmpty() },
+          )
 
           navController.navigate(ROUTE_PROFILE)
         }
