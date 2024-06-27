@@ -32,14 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.constants.ROUTE_LOGIN
 import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE_SETTINGS
@@ -117,11 +115,10 @@ private fun ProfileContent(
       modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      AsyncImage(
-        model = "https://i.imgur.com/2jzUqgr.png",
+      Icon(
+        painter = painterResource(id = R.drawable.ic_profile),
         contentDescription = "Profile Picture",
         modifier = Modifier.size(75.dp).clip(CircleShape),
-        contentScale = ContentScale.Crop,
       )
       Spacer(modifier = Modifier.width(16.dp))
       Column {
@@ -151,7 +148,7 @@ private fun ProfileContent(
     HorizontalDivider(
       modifier = Modifier.padding(vertical = 16.dp),
       thickness = 1.dp,
-      color = Color.Gray
+      color = Color.Gray,
     )
 
     Row(
@@ -167,7 +164,7 @@ private fun ProfileContent(
     HorizontalDivider(
       modifier = Modifier.padding(vertical = 16.dp),
       thickness = 1.dp,
-      color = Color.Gray
+      color = Color.Gray,
     )
   }
 }

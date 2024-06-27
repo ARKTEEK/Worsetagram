@@ -31,13 +31,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.utilities.getTimeDifference
 import me.arkteek.worsetagram.domain.model.Post
@@ -66,17 +64,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
                 IconButton(onClick = {}) {
                   Icon(
                     painter = painterResource(R.drawable.ic_arrow_down),
-                    contentDescription = "Heart Icon",
-                    modifier = Modifier.size(24.dp),
-                  )
-                }
-              },
-            rightActions =
-              listOf {
-                IconButton(onClick = {}) {
-                  Icon(
-                    painter = painterResource(R.drawable.ic_heart),
-                    contentDescription = "Heart Icon",
+                    contentDescription = "Arrow Icon",
                     modifier = Modifier.size(24.dp),
                   )
                 }
@@ -128,14 +116,13 @@ fun PostSection(
         Modifier.fillMaxWidth().padding(start = 6.dp, end = 6.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-        AsyncImage(
-          model = "https://i.imgur.com/tkomqK8.png",
+        Icon(
+          painter = painterResource(id = R.drawable.ic_profile),
           contentDescription = null,
           modifier =
             Modifier.size(35.dp).clip(CircleShape).clickable {
               navController.navigate("profile-other/${post.authorUID}")
             },
-          contentScale = ContentScale.Crop,
         )
 
         Text(
@@ -186,14 +173,6 @@ fun PostSection(
             Icon(
               painter = painterResource(R.drawable.ic_comment),
               contentDescription = "Comment Icon",
-              modifier = Modifier.size(20.dp),
-            )
-          }
-
-          IconButton(onClick = { /* TODO: Implement Share function */ }) {
-            Icon(
-              painter = painterResource(R.drawable.ic_share),
-              contentDescription = "Share Icon",
               modifier = Modifier.size(20.dp),
             )
           }

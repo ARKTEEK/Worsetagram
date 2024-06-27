@@ -70,8 +70,8 @@ dependencies {
   implementation(libs.androidx.constraintlayout.compose)
   implementation(libs.firebase.firestore)
   implementation(libs.firebase.storage)
-    implementation(libs.androidx.runtime.livedata)
-    kapt(libs.hilt.android.compiler)
+  implementation(libs.androidx.runtime.livedata)
+  kapt(libs.hilt.android.compiler)
 
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)

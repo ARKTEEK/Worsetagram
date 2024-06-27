@@ -15,7 +15,6 @@ import me.arkteek.worsetagram.common.constants.ROUTE_COMMENTS
 import me.arkteek.worsetagram.common.constants.ROUTE_HOME
 import me.arkteek.worsetagram.common.constants.ROUTE_LOGIN
 import me.arkteek.worsetagram.common.constants.ROUTE_NEW_POST
-import me.arkteek.worsetagram.common.constants.ROUTE_POST
 import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE
 import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE_OTHER
 import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE_SETTINGS
@@ -29,7 +28,6 @@ import me.arkteek.worsetagram.ui.screen.chat.ChatListScreen
 import me.arkteek.worsetagram.ui.screen.chat.ChatScreen
 import me.arkteek.worsetagram.ui.screen.post.CommentScreen
 import me.arkteek.worsetagram.ui.screen.post.PostCreationScreen
-import me.arkteek.worsetagram.ui.screen.post.PostScreen
 import me.arkteek.worsetagram.ui.screen.profile.ProfileOtherScreen
 import me.arkteek.worsetagram.ui.screen.profile.ProfileSelfScreen
 import me.arkteek.worsetagram.ui.screen.profile.ProfileSettingsScreen
@@ -62,14 +60,6 @@ fun AppNavHost(
     }
     composable(ROUTE_CHAT_LIST) {
       ChatListScreen(viewModel = viewModel, navController = navController)
-    }
-    composable(
-      route = ROUTE_POST,
-      arguments = listOf(navArgument("postId") { type = NavType.StringType }),
-    ) { entry ->
-      val postId = entry.arguments?.getString("postId") ?: ""
-      val postViewModel: PostViewModel = hiltViewModel()
-      PostScreen(postId, navController, viewModel = postViewModel)
     }
     composable(
       route = ROUTE_COMMENTS,

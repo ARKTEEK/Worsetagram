@@ -82,7 +82,7 @@ fun CommentScreen(
           LazyColumn(modifier = Modifier.weight(1f)) {
             items(comments!!.size) { index ->
               val comment = comments!![index]
-              CommentItem(viewModel, "https://i.imgur.com/tkomqK8.png", comment)
+              CommentItem(viewModel, comment)
               HorizontalDivider()
             }
           }
@@ -133,7 +133,7 @@ fun AvatarImage(imageUrl: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CommentItem(viewModel: PostViewModel, imageUrl: String, comment: Comment) {
+fun CommentItem(viewModel: PostViewModel, comment: Comment) {
   var authorNickname by remember(comment.authorUID) { mutableStateOf("") }
 
   LaunchedEffect(comment.authorUID) {
@@ -142,7 +142,11 @@ fun CommentItem(viewModel: PostViewModel, imageUrl: String, comment: Comment) {
 
   Column(modifier = Modifier.padding(8.dp)) {
     Row {
-      AvatarImage(imageUrl = imageUrl, modifier = Modifier.padding(end = 8.dp))
+      Icon(
+        painter = painterResource(id = R.drawable.ic_profile),
+        contentDescription = "Profile Picture",
+        modifier = Modifier.padding(end = 8.dp),
+      )
       Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = authorNickname, fontWeight = FontWeight.Bold, fontSize = 14.sp)

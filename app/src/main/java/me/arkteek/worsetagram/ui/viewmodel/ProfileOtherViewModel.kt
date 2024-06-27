@@ -79,7 +79,7 @@ constructor(
     }
   }
 
-  suspend fun getPostAmount(userId: String): Int{
+  suspend fun getPostAmount(userId: String): Int {
     return postRepository.getUserPosts(userId).count()
   }
 }
