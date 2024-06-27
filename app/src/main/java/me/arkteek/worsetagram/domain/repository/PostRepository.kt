@@ -25,7 +25,5 @@ interface PostRepository {
 
   suspend fun addComment(postId: String, comment: Comment)
 
-  suspend fun deleteComment(postId: String, commentId: String)
-
   suspend fun hasLikedPost(postId: String, userId: String): Boolean
 }

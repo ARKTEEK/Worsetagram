@@ -20,10 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel
 @Inject
-constructor(
-  private val userRepository: UserRepository,
-  private val postRepository: PostRepository,
-) : ViewModel() {
+constructor(val userRepository: UserRepository, private val postRepository: PostRepository) :
+  ViewModel() {
 
   private val _authenticatedUser = MutableLiveData<User>()
   private val authenticatedUser: LiveData<User> = _authenticatedUser
@@ -31,8 +29,8 @@ constructor(
   private val _post = MutableLiveData<Post?>()
   val post: LiveData<Post?> = _post
 
-  private val _user = MutableLiveData<User?>()
-  val user: LiveData<User?> = _user
+  private val _postAuthor = MutableLiveData<User?>()
+  val postAuthor: LiveData<User?> = _postAuthor
 
   private val _comments = MutableLiveData<List<Comment>?>()
   val comments: MutableLiveData<List<Comment>?> = _comments
@@ -74,7 +72,7 @@ constructor(
         _post.value = post
 
         val user = userRepository.get(post?.authorUID ?: "").firstOrNull()
-        _user.value = user
+        _postAuthor.value = user
 
         val hasLiked = postRepository.hasLikedPost(postId, authenticatedUser.value?.uid ?: "")
         _isLiked.value = hasLiked
@@ -109,5 +107,9 @@ constructor(
         e.printStackTrace()
       }
     }
+  }
+
+  suspend fun getUserNickname(userId: String): String {
+    return userRepository.get(userId).firstOrNull()?.nickname ?: ""
   }
 }

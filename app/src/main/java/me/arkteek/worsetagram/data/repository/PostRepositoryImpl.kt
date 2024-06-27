@@ -173,7 +173,6 @@ class PostRepositoryImpl @Inject constructor(private val database: FirebaseFires
           val snapshot = transaction.get(postRef)
           val post = snapshot.toObject(Post::class.java) ?: throw Exception("Post not found")
           val updatedComments = post.comments.toMutableList()
-          val commentId = database.collection("comments").document().id
           updatedComments.add(comment)
           transaction.update(postRef, "comments", updatedComments)
         }
@@ -181,18 +180,5 @@ class PostRepositoryImpl @Inject constructor(private val database: FirebaseFires
     } catch (e: Exception) {
       throw e
     }
-  }
-
-  override suspend fun deleteComment(postId: String, commentId: String) {
-    val postRef = database.collection(COLLECTION_POSTS).document(postId)
-    database
-      .runTransaction { transaction ->
-        val snapshot = transaction.get(postRef)
-        val post = snapshot.toObject(Post::class.java) ?: throw Exception("Post not found")
-        val updatedComments = post.comments.toMutableList()
-        //        updatedComments.remove(commentId)
-        transaction.update(postRef, "comments", updatedComments)
-      }
-      .await()
   }
 }

@@ -4,11 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
@@ -23,19 +26,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.utilities.getTimeDifference
+import me.arkteek.worsetagram.domain.model.Comment
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.viewmodel.PostViewModel
 
@@ -45,8 +54,9 @@ fun CommentScreen(
   navController: NavHostController,
   viewModel: PostViewModel = hiltViewModel(),
 ) {
-  val user by viewModel.user.observeAsState()
+  val keyboardController = LocalSoftwareKeyboardController.current
   val comments by viewModel.comments.observeAsState(emptyList())
+  var commentInputText by remember { mutableStateOf("") }
 
   LaunchedEffect(postId) { viewModel.loadPost(postId) }
 
@@ -72,22 +82,21 @@ fun CommentScreen(
           LazyColumn(modifier = Modifier.weight(1f)) {
             items(comments!!.size) { index ->
               val comment = comments!![index]
-              CommentItem(
-                username = user?.nickname!!,
-                comment = comment.text,
-                imageUrl = "https://i.imgur.com/2jzUqgr.png",
-                timeAgo = getTimeDifference(comment.timestamp),
-              )
+              CommentItem(viewModel, "https://i.imgur.com/tkomqK8.png", comment)
               HorizontalDivider()
             }
           }
           HorizontalDivider()
           Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextField(
-              value = "",
-              onValueChange = {},
-              placeholder = { Text("What's happening?", color = Color.Gray) },
-              modifier = Modifier.fillMaxWidth().background(Color.Transparent),
+              value = commentInputText,
+              onValueChange = { commentInputText = it },
+              placeholder = { Text("What are your thoughts?", color = Color.Gray) },
+              modifier =
+                Modifier.fillMaxWidth()
+                  .background(Color.Transparent)
+                  .weight(1f)
+                  .width(IntrinsicSize.Max),
               colors =
                 TextFieldDefaults.colors(
                   focusedContainerColor = Color.Transparent,
@@ -99,7 +108,12 @@ fun CommentScreen(
             Text(
               text = "Post",
               color = Color.Blue,
-              modifier = Modifier.padding(8.dp).clickable { /* Handle post action */ },
+              modifier =
+                Modifier.padding(8.dp).clickable {
+                  viewModel.addComment(commentInputText)
+                  commentInputText = ""
+                  keyboardController?.hide()
+                },
             )
           }
         }
@@ -113,21 +127,35 @@ fun AvatarImage(imageUrl: String, modifier: Modifier = Modifier) {
   Image(
     painter = rememberAsyncImagePainter(model = imageUrl),
     contentDescription = null,
-    modifier = modifier.size(40.dp).clip(CircleShape).background(Color.White),
+    modifier = modifier.size(35.dp).clip(CircleShape).background(Color.White),
     contentScale = ContentScale.Crop,
   )
 }
 
 @Composable
-fun CommentItem(username: String, comment: String, imageUrl: String, timeAgo: String) {
+fun CommentItem(viewModel: PostViewModel, imageUrl: String, comment: Comment) {
+  var authorNickname by remember(comment.authorUID) { mutableStateOf("") }
+
+  LaunchedEffect(comment.authorUID) {
+    authorNickname = viewModel.getUserNickname(comment.authorUID)
+  }
 
   Column(modifier = Modifier.padding(8.dp)) {
     Row {
       AvatarImage(imageUrl = imageUrl, modifier = Modifier.padding(end = 8.dp))
       Column {
-        Text(text = username, fontWeight = FontWeight.Bold)
-        Text(text = comment)
-        Text(text = timeAgo)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+          Text(text = authorNickname, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+          Spacer(modifier = Modifier.width(4.dp))
+          Text(text = comment.text, fontWeight = FontWeight.Normal, fontSize = 14.sp)
+        }
+        Text(
+          text = getTimeDifference(comment.timestamp),
+          fontWeight = FontWeight.Normal,
+          fontSize = 12.sp,
+          color = Color.Gray,
+          modifier = Modifier.padding(top = 1.dp),
+        )
       }
     }
   }

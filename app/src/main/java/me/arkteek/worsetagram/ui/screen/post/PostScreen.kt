@@ -56,7 +56,7 @@ fun PostScreen(
   viewModel: PostViewModel = hiltViewModel(),
 ) {
   val post by viewModel.post.observeAsState()
-  val user by viewModel.user.observeAsState()
+  val user by viewModel.postAuthor.observeAsState()
   val comments by viewModel.comments.observeAsState(emptyList())
   val isLiked by viewModel.isLiked.observeAsState(false)
 
