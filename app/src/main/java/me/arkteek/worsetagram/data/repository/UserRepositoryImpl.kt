@@ -28,6 +28,44 @@ constructor(
     emit(user)
   }
 
+  override suspend fun search(query: String): List<User> {
+    val capitalizedQuery = query.capitalize()
+    val result =
+      database
+        .collection("users")
+        .orderBy("nickname")
+        .startAt(query)
+        .endAt(query + "\uf8ff")
+        .get()
+        .await()
+
+    if (result.isEmpty) {
+      val nameResults =
+        database
+          .collection("users")
+          .orderBy("firstname")
+          .startAt(capitalizedQuery)
+          .endAt(capitalizedQuery + "\uf8ff")
+          .get()
+          .await()
+
+      if (nameResults.isEmpty) {
+        return database
+          .collection("users")
+          .orderBy("lastname")
+          .startAt(capitalizedQuery)
+          .endAt(capitalizedQuery + "\uf8ff")
+          .get()
+          .await()
+          .toObjects(User::class.java)
+      }
+
+      return nameResults.toObjects(User::class.java)
+    }
+
+    return result.toObjects(User::class.java)
+  }
+
   override suspend fun merge(user: User) {
     val userId = user.uid ?: throw IllegalArgumentException("User id must not be null")
     database.collection(COLLECTION_USERS).document(userId).set(user).await()

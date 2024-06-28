@@ -37,6 +37,7 @@ import me.arkteek.worsetagram.ui.viewmodel.PostCreationViewModel
 import me.arkteek.worsetagram.ui.viewmodel.PostViewModel
 import me.arkteek.worsetagram.ui.viewmodel.ProfileOtherViewModel
 import me.arkteek.worsetagram.ui.viewmodel.ProfileViewModel
+import me.arkteek.worsetagram.ui.viewmodel.SearchViewModel
 
 @Composable
 fun AppNavHost(
@@ -52,7 +53,10 @@ fun AppNavHost(
       val homeViewModel: HomeViewModel = hiltViewModel()
       HomeScreen(homeViewModel, navController)
     }
-    composable(ROUTE_SEARCH) { SearchScreen(viewModel, navController) }
+    composable(ROUTE_SEARCH) {
+      val searchViewModel: SearchViewModel = hiltViewModel()
+      SearchScreen(searchViewModel, navController)
+    }
     composable(ROUTE_CHAT) { ChatScreen(viewModel, navController) }
     composable(ROUTE_NEW_POST) {
       val postCreationViewModel: PostCreationViewModel = hiltViewModel()
