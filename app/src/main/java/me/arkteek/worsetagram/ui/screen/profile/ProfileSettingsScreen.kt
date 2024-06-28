@@ -29,11 +29,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE
 import me.arkteek.worsetagram.domain.model.User
@@ -62,7 +64,7 @@ fun ProfileSettingsScreen(
           title = "Profile Settings",
           leftActions =
             listOf {
-              IconButton(onClick = { navController.navigate(ROUTE_PROFILE) }) {
+              IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                   painter = painterResource(R.drawable.ic_back),
                   contentDescription = "Settings",
@@ -110,10 +112,11 @@ private fun ProfileSettingsContent(
     Spacer(modifier = Modifier.height(16.dp))
 
     Box(modifier = Modifier.size(100.dp).clickable {}, contentAlignment = Alignment.Center) {
-      Icon(
-        painter = painterResource(id = R.drawable.ic_profile),
+      AsyncImage(
+        model = "https://i.imgur.com/nDAA9Th.jpeg",
         contentDescription = "Profile Picture",
         modifier = Modifier.size(100.dp).clip(CircleShape).background(Color.Gray),
+        contentScale = ContentScale.Crop,
       )
     }
 

@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.utilities.getTimeDifference
@@ -142,10 +143,11 @@ fun CommentItem(viewModel: PostViewModel, comment: Comment) {
 
   Column(modifier = Modifier.padding(8.dp)) {
     Row {
-      Icon(
-        painter = painterResource(id = R.drawable.ic_profile),
+      AsyncImage(
+        model = "https://i.imgur.com/nDAA9Th.jpeg",
         contentDescription = "Profile Picture",
-        modifier = Modifier.padding(end = 8.dp),
+        modifier = Modifier.padding(end = 8.dp).size(42.dp).clip(CircleShape),
+        contentScale = ContentScale.Crop,
       )
       Column {
         Row(verticalAlignment = Alignment.CenterVertically) {

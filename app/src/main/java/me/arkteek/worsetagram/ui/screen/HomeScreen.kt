@@ -31,11 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.utilities.getTimeDifference
 import me.arkteek.worsetagram.domain.model.Post
@@ -116,9 +118,10 @@ fun PostSection(
         Modifier.fillMaxWidth().padding(start = 6.dp, end = 6.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-        Icon(
-          painter = painterResource(id = R.drawable.ic_profile),
+        AsyncImage(
+          model = "https://i.imgur.com/nDAA9Th.jpeg",
           contentDescription = null,
+          contentScale = ContentScale.Crop,
           modifier =
             Modifier.size(35.dp).clip(CircleShape).clickable {
               navController.navigate("profile-other/${post.authorUID}")

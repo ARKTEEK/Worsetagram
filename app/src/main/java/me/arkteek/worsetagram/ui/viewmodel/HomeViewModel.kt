@@ -14,7 +14,6 @@ import me.arkteek.worsetagram.domain.model.Comment
 import me.arkteek.worsetagram.domain.model.PostWithAuthor
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.PostRepository
-import me.arkteek.worsetagram.domain.repository.StorageRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -24,7 +23,6 @@ class HomeViewModel
 constructor(
   private val userRepository: UserRepository,
   private val postRepository: PostRepository,
-  private val storageRepository: StorageRepository,
 ) : ViewModel() {
 
   private val _authenticatedUser = MutableLiveData<User>()
@@ -40,7 +38,7 @@ constructor(
 
   init {
     loadAuthenticatedUser()
-    loadPostsWithAuthors()
+    loadPosts()
   }
 
   private fun loadAuthenticatedUser() {
@@ -65,7 +63,7 @@ constructor(
     return postRepository.getCommentsForPost(postId)
   }
 
-  private fun loadPostsWithAuthors() {
+  private fun loadPosts() {
     viewModelScope.launch {
       try {
         _loading.value = true

@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.constants.ROUTE_CHAT
 import me.arkteek.worsetagram.domain.model.User
@@ -191,10 +193,11 @@ private fun ProfileContentHeader(ownerUser: User?) {
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.Center,
     ) {
-      Icon(
-        painter = painterResource(id = R.drawable.ic_profile),
+      AsyncImage(
+        model = "https://i.imgur.com/nDAA9Th.jpeg",
         contentDescription = "Profile Picture",
         modifier = Modifier.size(100.dp).clip(CircleShape),
+        contentScale = ContentScale.Crop
       )
     }
 
