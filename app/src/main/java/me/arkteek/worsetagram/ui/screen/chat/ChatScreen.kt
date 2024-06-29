@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.delay
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.domain.model.Message
 import me.arkteek.worsetagram.ui.component.HeaderBar
@@ -62,11 +63,15 @@ fun ChatScreen(
   val scrollState = rememberLazyListState()
 
   var conversationName by remember(otherUserId) { mutableStateOf("") }
+  val users = listOf(currentUser?.uid ?: "", otherUserId)
 
   LaunchedEffect(chatId) {
-    val users = listOf(currentUser?.uid ?: "", otherUserId)
-    conversationName = viewModel.getUserNickname(otherUserId)
     viewModel.createConversationIfNotExists(chatId, users)
+
+    delay(500)
+
+    conversationName = viewModel.getUserNickname(otherUserId)
+
     viewModel.findDocument(chatId, users)
     viewModel.loadMessages(chatId, users)
   }
@@ -89,7 +94,7 @@ fun ChatScreen(
     },
     bottomBar = {
       MessageInput(
-        onSendMessage = { content -> viewModel.sendMessage(chatId, content) },
+        onSendMessage = { content -> viewModel.sendMessage(chatId, users, content) },
         messageText = messageText,
         onMessageTextChanged = { messageText = it },
       )

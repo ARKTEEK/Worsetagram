@@ -34,6 +34,7 @@ class ChatRepositoryImpl @Inject constructor(private val database: FirebaseFires
   }
 
   override suspend fun loadMessages(chatId: String, users: List<String>?): List<Message> {
+
     if (chatId.isEmpty() || chatId == "{chatId}") {
       requireNotNull(users) { "Users list must be provided when chatId is empty or \"{chatId}\"" }
 
@@ -126,6 +127,6 @@ class ChatRepositoryImpl @Inject constructor(private val database: FirebaseFires
         database.collection("chats").document(chatId).get().await()
       }
 
-    return requireNotNull(query) { "Chat document not found" }
+    return requireNotNull(query) { createConversationIfNotExists(chatId, users!!) }
   }
 }

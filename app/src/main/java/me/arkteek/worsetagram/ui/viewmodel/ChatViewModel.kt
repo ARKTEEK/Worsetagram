@@ -37,10 +37,13 @@ constructor(
   }
 
   fun loadMessages(chatId: String, users: List<String> = emptyList()) {
-    viewModelScope.launch { _messages.value = chatRepository.loadMessages(chatId, users) }
+    viewModelScope.launch {
+      findDocument(chatId, users)
+      _messages.value = chatRepository.loadMessages(chatId, users)
+    }
   }
 
-  fun sendMessage(chatId: String, content: String) {
+  fun sendMessage(chatId: String, users: List<String> = emptyList(), content: String) {
     viewModelScope.launch {
       val message =
         Message(
@@ -50,7 +53,7 @@ constructor(
           timestamp = System.currentTimeMillis(),
         )
       chatRepository.sendMessage(document, message)
-      loadMessages(chatId)
+      loadMessages(chatId, users)
     }
   }
 
