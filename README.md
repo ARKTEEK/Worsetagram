@@ -5,8 +5,13 @@ Worsetagram is my first android project, it was made as a college assignment, to
 - Feed: View, like, and comment on posts from users.
 - Post Creation: Create new posts with images and captions.
 - Profile: View and edit your profile details.
-- Search: Search for Users or Posts you want.
+- Search: Search for Users you want.
 - Direct Messaging: Send and receive direct messages with other users.
+## Known issues/missing features
+- Share and Notification functions aren't implemented.
+- Authentication errors, like wrong password and so on, aren't shown to the user.
+## Simple showcase
+<video src="https://github.com/ARKTEEK/Worsetagram/assets/69106392/68ee4bca-9ef6-4653-a83d-dc5e3207e4e5"></video>
 ## Project Structure
 ```
 |-- app
