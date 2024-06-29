@@ -7,7 +7,7 @@ import me.arkteek.worsetagram.domain.model.User
 interface UserRepository {
   val user: Flow<FirebaseUser?>
 
-  suspend fun search(query: String) : List<User>
+  suspend fun search(query: String): List<User>
 
   suspend fun get(id: String): Flow<User?>
 

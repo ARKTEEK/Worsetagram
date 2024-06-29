@@ -15,12 +15,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,78 +30,57 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.common.constants.ROUTE_CHAT
+import com.google.firebase.auth.FirebaseAuth
 import me.arkteek.worsetagram.domain.model.ChatItem
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.SearchBar
-import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
+import me.arkteek.worsetagram.ui.viewmodel.ChatViewModel
 
 @Composable
-fun ChatListScreen(viewModel: AuthViewModel?, navController: NavHostController) {
-  viewModel?.currentUser?.let {
-    Scaffold(
-      topBar = {
-        HeaderBar(
-          title = "Messages",
-          rightActions =
-            listOf {
-              IconButton(onClick = {}) {
-                Icon(
-                  painter = painterResource(R.drawable.ic_send),
-                  contentDescription = "New Message",
-                  modifier = Modifier.size(24.dp),
-                )
-              }
-            },
-        )
-      },
-      bottomBar = { BottomNavigationBar(navController) },
-      content = { paddingValues ->
-        Surface(color = Color.White, modifier = Modifier.padding(paddingValues).fillMaxSize()) {
-          Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-            var searchText by remember { mutableStateOf("") }
+fun ChatListScreen(viewModel: ChatViewModel, navController: NavHostController) {
+  val currentUser = FirebaseAuth.getInstance().currentUser
+  val conversations by viewModel.conversations.collectAsState()
 
-            SearchBar(
-              searchText = searchText,
-              onSearchTextChanged = { newText -> searchText = newText },
-            )
+  LaunchedEffect(currentUser?.uid) { currentUser?.uid?.let { viewModel.loadUserConversations(it) } }
 
-            val messages =
-              listOf(
-                ChatItem(
-                  avatar = "https://i.imgur.com/oNxrcG0.jpeg",
-                  name = "Petras Jonutis",
-                  lastMessage = "Bye!",
-                ),
-                ChatItem(
-                  avatar = "https://i.imgur.com/oNxrcG0.jpeg",
-                  name = "Jonas Petrautis",
-                  lastMessage = "Dummy message...",
-                ),
-              )
+  Scaffold(
+    topBar = { HeaderBar(title = "Messages") },
+    bottomBar = { BottomNavigationBar(navController) },
+    content = { paddingValues ->
+      Surface(color = Color.White, modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+          var searchText by remember { mutableStateOf("") }
 
-            ChatsTab(chats = messages) { navController.navigate(ROUTE_CHAT) }
+          SearchBar(
+            searchText = searchText,
+            onSearchTextChanged = { newText -> searchText = newText },
+          )
+
+          if (conversations.isEmpty()) {
+            Text("No conversations available", modifier = Modifier.padding(16.dp))
+          } else {
+            ChatsTab(chats = conversations) { chatItem ->
+              navController.navigate("chat/${chatItem.chatId}/${chatItem.otherUserId}")
+            }
           }
         }
-      },
-    )
-  }
+      }
+    },
+  )
 }
 
 @Composable
-private fun ChatsTab(chats: List<ChatItem>, onClick: () -> Unit) {
+private fun ChatsTab(chats: List<ChatItem>, onClick: (ChatItem) -> Unit) {
   Column(modifier = Modifier.padding(16.dp)) {
     chats.forEach { chat ->
-      ChatItem(chat = chat, onClick)
+      ChatItem(chat = chat) { onClick(chat) }
       Spacer(modifier = Modifier.height(8.dp))
     }
   }

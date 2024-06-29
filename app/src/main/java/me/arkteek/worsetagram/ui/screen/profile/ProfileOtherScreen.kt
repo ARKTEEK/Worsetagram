@@ -42,7 +42,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.R
-import me.arkteek.worsetagram.common.constants.ROUTE_CHAT
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.FollowButton
@@ -95,6 +94,7 @@ fun ProfileOtherScreen(
       content = { paddingValues ->
         Surface(color = Color.White) {
           ProfileContent(
+            ownerUID,
             userOwner,
             userViewer,
             viewModel,
@@ -118,6 +118,7 @@ fun ProfileOtherScreen(
 
 @Composable
 private fun ProfileContent(
+  ownerUID: String,
   userOwner: User?,
   userViewer: User?,
   viewModel: ProfileOtherViewModel,
@@ -134,7 +135,10 @@ private fun ProfileContent(
       horizontalArrangement = Arrangement.Center,
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      RoundIconButton(icon = Icons.Default.Email, onClick = { navController.navigate(ROUTE_CHAT) })
+      RoundIconButton(
+        icon = Icons.Default.Email,
+        onClick = { navController.navigate("chat/${"{chatId}"}/${ownerUID}") },
+      )
 
       Spacer(modifier = Modifier.width(16.dp))
 
@@ -197,7 +201,7 @@ private fun ProfileContentHeader(ownerUser: User?) {
         model = "https://i.imgur.com/nDAA9Th.jpeg",
         contentDescription = "Profile Picture",
         modifier = Modifier.size(100.dp).clip(CircleShape),
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
       )
     }
 

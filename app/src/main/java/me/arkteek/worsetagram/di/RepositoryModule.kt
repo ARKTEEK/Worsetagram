@@ -9,10 +9,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.arkteek.worsetagram.data.repository.AuthRepositoryImpl
+import me.arkteek.worsetagram.data.repository.ChatRepositoryImpl
 import me.arkteek.worsetagram.data.repository.PostRepositoryImpl
 import me.arkteek.worsetagram.data.repository.StorageRepositoryImpl
 import me.arkteek.worsetagram.data.repository.UserRepositoryImpl
 import me.arkteek.worsetagram.domain.repository.AuthRepository
+import me.arkteek.worsetagram.domain.repository.ChatRepository
 import me.arkteek.worsetagram.domain.repository.PostRepository
 import me.arkteek.worsetagram.domain.repository.StorageRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
@@ -32,6 +34,10 @@ abstract class RepositoryModule {
   @Binds
   @Singleton
   abstract fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
+
+  @Binds
+  @Singleton
+  abstract fun bindChatRepository(chatRepositoryImpl: ChatRepositoryImpl): ChatRepository
 
   @Binds
   @Singleton

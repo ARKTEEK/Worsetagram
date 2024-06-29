@@ -32,6 +32,7 @@ import me.arkteek.worsetagram.ui.screen.profile.ProfileOtherScreen
 import me.arkteek.worsetagram.ui.screen.profile.ProfileSelfScreen
 import me.arkteek.worsetagram.ui.screen.profile.ProfileSettingsScreen
 import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
+import me.arkteek.worsetagram.ui.viewmodel.ChatViewModel
 import me.arkteek.worsetagram.ui.viewmodel.HomeViewModel
 import me.arkteek.worsetagram.ui.viewmodel.PostCreationViewModel
 import me.arkteek.worsetagram.ui.viewmodel.PostViewModel
@@ -57,13 +58,31 @@ fun AppNavHost(
       val searchViewModel: SearchViewModel = hiltViewModel()
       SearchScreen(searchViewModel, navController)
     }
-    composable(ROUTE_CHAT) { ChatScreen(viewModel, navController) }
+    composable(ROUTE_CHAT_LIST) {
+      val chatViewModel: ChatViewModel = hiltViewModel()
+      ChatListScreen(viewModel = chatViewModel, navController = navController)
+    }
+    composable(
+      route = ROUTE_CHAT,
+      arguments =
+        listOf(
+          navArgument("chatId") { type = NavType.StringType },
+          navArgument("otherUserId") { type = NavType.StringType },
+        ),
+    ) { entry ->
+      val chatId = entry.arguments?.getString("chatId") ?: ""
+      val otherUserId = entry.arguments?.getString("otherUserId") ?: ""
+      val chatViewModel: ChatViewModel = hiltViewModel()
+      ChatScreen(
+        chatId = chatId,
+        otherUserId = otherUserId,
+        viewModel = chatViewModel,
+        navController = navController,
+      )
+    }
     composable(ROUTE_NEW_POST) {
       val postCreationViewModel: PostCreationViewModel = hiltViewModel()
       PostCreationScreen(postCreationViewModel, navController)
-    }
-    composable(ROUTE_CHAT_LIST) {
-      ChatListScreen(viewModel = viewModel, navController = navController)
     }
     composable(
       route = ROUTE_COMMENTS,
