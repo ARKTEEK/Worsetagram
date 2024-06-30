@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.viewmodel
+package me.arkteek.worsetagram.ui.screen.post.creation
 
 import android.net.Uri
 import androidx.compose.runtime.State

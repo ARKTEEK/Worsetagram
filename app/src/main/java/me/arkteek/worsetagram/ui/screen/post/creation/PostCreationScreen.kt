@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen.post
+package me.arkteek.worsetagram.ui.screen.post.creation
 
 import android.net.Uri
 import android.widget.Toast
@@ -47,8 +47,6 @@ import kotlinx.coroutines.launch
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.constants.ROUTE_HOME
 import me.arkteek.worsetagram.ui.screen.LoadingScreen
-import me.arkteek.worsetagram.ui.viewmodel.CreatePostState
-import me.arkteek.worsetagram.ui.viewmodel.PostCreationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -41,7 +41,6 @@ import me.arkteek.worsetagram.domain.model.ChatItem
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.SearchBar
-import me.arkteek.worsetagram.ui.viewmodel.ChatViewModel
 
 @Composable
 fun ChatListScreen(viewModel: ChatViewModel, navController: NavHostController) {

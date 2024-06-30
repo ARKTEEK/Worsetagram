@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.viewmodel
+package me.arkteek.worsetagram.ui.screen.profile.other
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,9 +28,9 @@ constructor(
   val firebaseViewerUser: StateFlow<FirebaseUser?>
     get() = _firebaseViewerUser
 
-  private val _viewUser = MutableStateFlow<User?>(null)
-  val viewerUser: StateFlow<User?>
-    get() = _viewUser
+  private val _userViewer = MutableStateFlow<User?>(null)
+  val userViewer: StateFlow<User?>
+    get() = _userViewer
 
   private val _userOwner = MutableStateFlow<User?>(null)
   val userOwner: StateFlow<User?>
@@ -45,7 +45,7 @@ constructor(
       authRepository.user.collect { firebaseUser ->
         _firebaseViewerUser.value = firebaseUser
         firebaseUser?.uid?.let { viewerUserId ->
-          userRepository.get(viewerUserId).collect { _viewUser.value = it }
+          userRepository.get(viewerUserId).collect { _userViewer.value = it }
         }
       }
     }

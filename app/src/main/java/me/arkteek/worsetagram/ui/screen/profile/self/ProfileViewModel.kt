@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.viewmodel
+package me.arkteek.worsetagram.ui.screen.profile.self
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

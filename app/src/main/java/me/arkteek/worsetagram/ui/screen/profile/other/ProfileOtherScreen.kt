@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen.profile
+package me.arkteek.worsetagram.ui.screen.profile.other
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,7 +49,6 @@ import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.ProfileCount
 import me.arkteek.worsetagram.ui.component.RoundIconButton
 import me.arkteek.worsetagram.ui.screen.LoadingScreen
-import me.arkteek.worsetagram.ui.viewmodel.ProfileOtherViewModel
 
 @Composable
 fun ProfileOtherScreen(
@@ -58,7 +57,7 @@ fun ProfileOtherScreen(
   ownerUID: String,
 ) {
   val firebaseViewerUser by viewModel.firebaseViewerUser.collectAsState()
-  val userViewer by viewModel.viewerUser.collectAsState()
+  val userViewer by viewModel.userViewer.collectAsState()
   val userOwner by viewModel.userOwner.collectAsState()
 
   var isLoading by remember { mutableStateOf(true) }

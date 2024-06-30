@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen.profile
+package me.arkteek.worsetagram.ui.screen.profile.self
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,8 +48,7 @@ import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.ProfileCount
 import me.arkteek.worsetagram.ui.screen.LoadingScreen
-import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
-import me.arkteek.worsetagram.ui.viewmodel.ProfileViewModel
+import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
 
 @Composable
 fun ProfileSelfScreen(

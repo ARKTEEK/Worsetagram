@@ -47,7 +47,6 @@ import kotlinx.coroutines.delay
 import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.domain.model.Message
 import me.arkteek.worsetagram.ui.component.HeaderBar
-import me.arkteek.worsetagram.ui.viewmodel.ChatViewModel
 
 @Composable
 fun ChatScreen(

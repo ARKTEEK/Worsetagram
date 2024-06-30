@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen.profile
+package me.arkteek.worsetagram.ui.screen.profile.self
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,12 +42,11 @@ import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.screen.LoadingScreen
-import me.arkteek.worsetagram.ui.viewmodel.ProfileViewModel
 
 @Composable
 fun ProfileSettingsScreen(
-  viewModel: ProfileViewModel = hiltViewModel(),
-  navController: NavHostController,
+    viewModel: ProfileViewModel = hiltViewModel(),
+    navController: NavHostController,
 ) {
   val firebaseUser by viewModel.firebaseUser.collectAsState()
   val user by viewModel.user.collectAsState()
@@ -95,9 +94,9 @@ fun ProfileSettingsScreen(
 
 @Composable
 private fun ProfileSettingsContent(
-  userDetails: User?,
-  navController: NavHostController,
-  viewModel: ProfileViewModel,
+    userDetails: User?,
+    navController: NavHostController,
+    viewModel: ProfileViewModel,
 ) {
   var firstName by remember { mutableStateOf(userDetails?.firstname ?: "") }
   var lastName by remember { mutableStateOf(userDetails?.lastname ?: "") }

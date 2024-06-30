@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen
+package me.arkteek.worsetagram.ui.screen.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -46,12 +46,11 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
-import me.arkteek.worsetagram.ui.viewmodel.SearchViewModel
 
 @Composable
 fun SearchScreen(
-  searchViewModel: SearchViewModel = hiltViewModel(),
-  navController: NavHostController,
+    searchViewModel: SearchViewModel = hiltViewModel(),
+    navController: NavHostController,
 ) {
   var searchText by remember { mutableStateOf("") }
   val searchResults by searchViewModel.searchResults.collectAsState()

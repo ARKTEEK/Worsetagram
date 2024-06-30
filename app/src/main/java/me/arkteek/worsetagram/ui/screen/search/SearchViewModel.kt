@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.viewmodel
+package me.arkteek.worsetagram.ui.screen.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

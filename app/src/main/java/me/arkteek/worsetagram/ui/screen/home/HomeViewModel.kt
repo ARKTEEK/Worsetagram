@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.viewmodel
+package me.arkteek.worsetagram.ui.screen.home
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -15,7 +16,6 @@ import me.arkteek.worsetagram.domain.model.PostWithAuthor
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.PostRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
-import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel
@@ -68,12 +68,10 @@ constructor(
       try {
         _loading.value = true
         val posts = postRepository.getPosts().first()
-
         val postsWithAuthors =
           posts
             .map { post ->
               val author = userRepository.get(post.authorUID).firstOrNull()
-
               val comments = getComments(post.uid)
 
               PostWithAuthor(post, author, comments)
@@ -85,6 +83,7 @@ constructor(
         posts.forEach { post -> _likedPosts[post.uid] = MutableLiveData(false) }
 
         val currentUser = authenticatedUser.value
+
         if (currentUser != null) {
           posts.forEach { post ->
             viewModelScope.launch {

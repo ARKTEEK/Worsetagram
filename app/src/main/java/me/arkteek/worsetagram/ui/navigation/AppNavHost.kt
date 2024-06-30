@@ -20,25 +20,25 @@ import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE_OTHER
 import me.arkteek.worsetagram.common.constants.ROUTE_PROFILE_SETTINGS
 import me.arkteek.worsetagram.common.constants.ROUTE_SEARCH
 import me.arkteek.worsetagram.common.constants.ROUTE_SIGNUP
-import me.arkteek.worsetagram.ui.screen.HomeScreen
-import me.arkteek.worsetagram.ui.screen.SearchScreen
+import me.arkteek.worsetagram.ui.screen.home.HomeScreen
+import me.arkteek.worsetagram.ui.screen.search.SearchScreen
 import me.arkteek.worsetagram.ui.screen.authentication.LoginScreen
 import me.arkteek.worsetagram.ui.screen.authentication.SignupScreen
 import me.arkteek.worsetagram.ui.screen.chat.ChatListScreen
 import me.arkteek.worsetagram.ui.screen.chat.ChatScreen
-import me.arkteek.worsetagram.ui.screen.post.CommentScreen
-import me.arkteek.worsetagram.ui.screen.post.PostCreationScreen
-import me.arkteek.worsetagram.ui.screen.profile.ProfileOtherScreen
-import me.arkteek.worsetagram.ui.screen.profile.ProfileSelfScreen
-import me.arkteek.worsetagram.ui.screen.profile.ProfileSettingsScreen
-import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
-import me.arkteek.worsetagram.ui.viewmodel.ChatViewModel
-import me.arkteek.worsetagram.ui.viewmodel.HomeViewModel
-import me.arkteek.worsetagram.ui.viewmodel.PostCreationViewModel
-import me.arkteek.worsetagram.ui.viewmodel.PostViewModel
-import me.arkteek.worsetagram.ui.viewmodel.ProfileOtherViewModel
-import me.arkteek.worsetagram.ui.viewmodel.ProfileViewModel
-import me.arkteek.worsetagram.ui.viewmodel.SearchViewModel
+import me.arkteek.worsetagram.ui.screen.post.comments.CommentScreen
+import me.arkteek.worsetagram.ui.screen.post.comments.CommentsViewModel
+import me.arkteek.worsetagram.ui.screen.post.creation.PostCreationScreen
+import me.arkteek.worsetagram.ui.screen.profile.other.ProfileOtherScreen
+import me.arkteek.worsetagram.ui.screen.profile.self.ProfileSelfScreen
+import me.arkteek.worsetagram.ui.screen.profile.self.ProfileSettingsScreen
+import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
+import me.arkteek.worsetagram.ui.screen.chat.ChatViewModel
+import me.arkteek.worsetagram.ui.screen.home.HomeViewModel
+import me.arkteek.worsetagram.ui.screen.post.creation.PostCreationViewModel
+import me.arkteek.worsetagram.ui.screen.profile.other.ProfileOtherViewModel
+import me.arkteek.worsetagram.ui.screen.profile.self.ProfileViewModel
+import me.arkteek.worsetagram.ui.screen.search.SearchViewModel
 
 @Composable
 fun AppNavHost(
@@ -89,8 +89,8 @@ fun AppNavHost(
       arguments = listOf(navArgument("postId") { type = NavType.StringType }),
     ) { entry ->
       val postId = entry.arguments?.getString("postId") ?: ""
-      val postViewModel: PostViewModel = hiltViewModel()
-      CommentScreen(postId, navController, viewModel = postViewModel)
+      val commentsViewModel: CommentsViewModel = hiltViewModel()
+      CommentScreen(postId, navController, viewModel = commentsViewModel)
     }
     composable(ROUTE_PROFILE_SETTINGS) {
       val profileViewModel: ProfileViewModel = hiltViewModel()

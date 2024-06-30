@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen
+package me.arkteek.worsetagram.ui.screen.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -45,7 +45,7 @@ import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.ImageScrollWithTextOverlay
-import me.arkteek.worsetagram.ui.viewmodel.HomeViewModel
+import me.arkteek.worsetagram.ui.screen.LoadingScreen
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
@@ -101,11 +101,11 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
 
 @Composable
 fun PostSection(
-  post: Post,
-  user: User?,
-  viewer: User?,
-  viewModel: HomeViewModel,
-  navController: NavHostController,
+    post: Post,
+    user: User?,
+    viewer: User?,
+    viewModel: HomeViewModel,
+    navController: NavHostController,
 ) {
   val isLiked by viewModel.getLikedStatus(post.uid).observeAsState(false)
   var likesCount by remember { mutableIntStateOf(post.likes.size) }

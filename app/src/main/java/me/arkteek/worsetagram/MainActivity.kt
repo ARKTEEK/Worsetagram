@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import dagger.hilt.android.AndroidEntryPoint
 import me.arkteek.worsetagram.ui.navigation.AppNavHost
 import me.arkteek.worsetagram.ui.theme.WorsetagramTheme
-import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
+import me.arkteek.worsetagram.ui.screen.authentication.AuthViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

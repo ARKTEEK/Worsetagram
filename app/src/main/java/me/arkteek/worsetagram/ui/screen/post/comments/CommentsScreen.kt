@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.screen.post
+package me.arkteek.worsetagram.ui.screen.post.comments
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,13 +47,12 @@ import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.utilities.getTimeDifference
 import me.arkteek.worsetagram.domain.model.Comment
 import me.arkteek.worsetagram.ui.component.HeaderBar
-import me.arkteek.worsetagram.ui.viewmodel.PostViewModel
 
 @Composable
 fun CommentScreen(
   postId: String,
   navController: NavHostController,
-  viewModel: PostViewModel = hiltViewModel(),
+  viewModel: CommentsViewModel = hiltViewModel(),
 ) {
   val keyboardController = LocalSoftwareKeyboardController.current
   val comments by viewModel.comments.observeAsState(emptyList())
@@ -134,7 +133,7 @@ fun AvatarImage(imageUrl: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CommentItem(viewModel: PostViewModel, comment: Comment) {
+fun CommentItem(viewModel: CommentsViewModel, comment: Comment) {
   var authorNickname by remember(comment.authorUID) { mutableStateOf("") }
 
   LaunchedEffect(comment.authorUID) {

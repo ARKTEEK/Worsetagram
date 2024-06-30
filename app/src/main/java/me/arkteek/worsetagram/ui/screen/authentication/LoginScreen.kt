@@ -32,7 +32,6 @@ import me.arkteek.worsetagram.common.constants.ROUTE_LOGIN
 import me.arkteek.worsetagram.common.constants.ROUTE_SIGNUP
 import me.arkteek.worsetagram.data.source.remote.AuthResource
 import me.arkteek.worsetagram.ui.screen.LoadingScreen
-import me.arkteek.worsetagram.ui.viewmodel.AuthViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

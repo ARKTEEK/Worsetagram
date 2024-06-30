@@ -1,4 +1,4 @@
-package me.arkteek.worsetagram.ui.viewmodel
+package me.arkteek.worsetagram.ui.screen.post.comments
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +18,7 @@ import me.arkteek.worsetagram.domain.repository.UserRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class PostViewModel
+class CommentsViewModel
 @Inject
 constructor(val userRepository: UserRepository, private val postRepository: PostRepository) :
   ViewModel() {
@@ -29,21 +29,14 @@ constructor(val userRepository: UserRepository, private val postRepository: Post
   private val _post = MutableLiveData<Post?>()
   val post: LiveData<Post?> = _post
 
-  private val _postAuthor = MutableLiveData<User?>()
-  val postAuthor: LiveData<User?> = _postAuthor
-
   private val _comments = MutableLiveData<List<Comment>?>()
   val comments: MutableLiveData<List<Comment>?> = _comments
-
-  private val _isLiked = MutableLiveData<Boolean>()
-  val isLiked: LiveData<Boolean> = _isLiked
 
   private val _loading = mutableStateOf(false)
   val loading: State<Boolean> = _loading
 
   init {
     loadAuthenticatedUser()
-    _isLiked.value = false
   }
 
   private fun loadAuthenticatedUser() {
@@ -70,13 +63,6 @@ constructor(val userRepository: UserRepository, private val postRepository: Post
         _loading.value = true
         val post = postRepository.getPost(postId).firstOrNull()
         _post.value = post
-
-        val user = userRepository.get(post?.authorUID ?: "").firstOrNull()
-        _postAuthor.value = user
-
-        val hasLiked = postRepository.hasLikedPost(postId, authenticatedUser.value?.uid ?: "")
-        _isLiked.value = hasLiked
-
         val commentsList = post?.comments ?: emptyList()
         _comments.value = commentsList
       } catch (e: Exception) {
@@ -98,7 +84,6 @@ constructor(val userRepository: UserRepository, private val postRepository: Post
             timestamp = System.currentTimeMillis(),
           )
         postRepository.addComment(postId, comment)
-
         val currentComments = _comments.value ?: emptyList()
         val updatedComments = currentComments.toMutableList()
         updatedComments.add(comment)

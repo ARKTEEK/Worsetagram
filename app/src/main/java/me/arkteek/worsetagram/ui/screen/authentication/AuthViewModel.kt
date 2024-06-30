@@ -1,10 +1,9 @@
-package me.arkteek.worsetagram.ui.viewmodel
+package me.arkteek.worsetagram.ui.screen.authentication
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,8 +18,6 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
 
   private val _signupFlow = MutableStateFlow<AuthResource<FirebaseUser>?>(null)
   val signupFlow: StateFlow<AuthResource<FirebaseUser>?> = _signupFlow
-
-  val currentUser: Flow<FirebaseUser?> = repository.user
 
   init {
     viewModelScope.launch {
