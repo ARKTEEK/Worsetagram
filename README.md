@@ -34,7 +34,6 @@ Worsetagram is my first android project, it was made as a college assignment, to
 |                       |-- navigation
 |                       |-- screen
 |                       |-- theme
-|                       |-- viewModel
 |                   |-- MainActivity.kt
 |                   |-- App.kt
 ```
@@ -54,7 +53,6 @@ Worsetagram is my first android project, it was made as a college assignment, to
     - component: Contains reusable UI components.
     - navigation: Everything related to navigation between screens.
     - theme: Contains custom themes and styles.
-    - screen: Contains individual screens or destinations in the app.
-    - viewModel: Contains ViewModels for each screen or view.
+    - screen: Contains individual screens or destinations in the app, as well as their HiltViewModels.
 ## Code Style
 Project uses [ktfmt](https://github.com/facebook/ktfmt), a program that formats Kotlin code, based on [google-java-format](https://github.com/google/google-java-format).
