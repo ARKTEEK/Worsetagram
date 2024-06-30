@@ -48,12 +48,13 @@ constructor(
           newEmail
             ?.takeIf { it.isNotEmpty() }
             ?.let { email -> firebaseUser.updateEmail(email).await() }
-
           newPassword
             ?.takeIf { it.isNotEmpty() }
             ?.let { password -> firebaseUser.updatePassword(password).await() }
         }
-      } catch (_: Exception) {}
+      } catch (e: Exception) {
+        e.printStackTrace()
+      }
     }
   }
 }

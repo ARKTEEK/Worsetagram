@@ -29,7 +29,6 @@ constructor(
   private val postRepository: PostRepository,
   private val storageRepository: StorageRepository,
 ) : ViewModel() {
-
   private val _authenticatedUser = MutableLiveData<User>()
   val authenticatedUser: LiveData<User> = _authenticatedUser
 
@@ -48,8 +47,8 @@ constructor(
       try {
         _loading.value = true
         userRepository.user.collect { firebaseUser ->
-          if (firebaseUser != null) {
-            val user = userRepository.get(firebaseUser.uid).first()
+          firebaseUser?.let {
+            val user = userRepository.get(it.uid).first()
             _authenticatedUser.value = user!!
           }
         }

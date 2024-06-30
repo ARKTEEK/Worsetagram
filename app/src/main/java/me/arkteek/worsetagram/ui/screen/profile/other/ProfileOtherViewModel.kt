@@ -64,16 +64,16 @@ constructor(
   }
 
   fun followUser(targetUserId: String) {
+    val currentUserId = _firebaseViewerUser.value?.uid ?: return
     viewModelScope.launch {
-      val currentUserId = _firebaseViewerUser.value?.uid ?: return@launch
       userRepository.follow(currentUserId, targetUserId)
       _isFollowing.value = true
     }
   }
 
   fun unfollowUser(targetUserId: String) {
+    val currentUserId = _firebaseViewerUser.value?.uid ?: return
     viewModelScope.launch {
-      val currentUserId = _firebaseViewerUser.value?.uid ?: return@launch
       userRepository.unfollow(currentUserId, targetUserId)
       _isFollowing.value = false
     }

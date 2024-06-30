@@ -20,13 +20,13 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
   val signupFlow: StateFlow<AuthResource<FirebaseUser>?> = _signupFlow
 
   init {
+    observeUser()
+  }
+
+  private fun observeUser() {
     viewModelScope.launch {
       repository.user.collect { user ->
-        if (user != null) {
-          _loginFlow.value = AuthResource.Success(user)
-        } else {
-          _loginFlow.value = null
-        }
+        _loginFlow.value = if (user != null) AuthResource.Success(user) else null
       }
     }
   }
@@ -34,11 +34,10 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
   fun loginUser(email: String, password: String) =
     viewModelScope.launch {
       _loginFlow.value = AuthResource.Loading
-      val result = repository.login(email, password)
-      _loginFlow.value = result
+      _loginFlow.value = repository.login(email, password)
     }
 
-  fun singupUser(
+  fun signupUser(
     firstname: String,
     lastname: String,
     nickname: String,
@@ -47,8 +46,7 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
   ) =
     viewModelScope.launch {
       _signupFlow.value = AuthResource.Loading
-      val result = repository.signup(firstname, lastname, nickname, email, password)
-      _signupFlow.value = result
+      _signupFlow.value = repository.signup(firstname, lastname, nickname, email, password)
     }
 
   fun logout() {

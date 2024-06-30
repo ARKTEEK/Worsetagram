@@ -17,12 +17,11 @@ class AuthRepositoryImpl
 @Inject
 constructor(private val firebaseAuth: FirebaseAuth, private val userRepository: UserRepository) :
   AuthRepository {
+
   override val user: Flow<FirebaseUser?>
     get() = callbackFlow {
       val authListener = FirebaseAuth.AuthStateListener { trySend(it.currentUser) }
-
       firebaseAuth.addAuthStateListener(authListener)
-
       awaitClose { firebaseAuth.removeAuthStateListener(authListener) }
     }
 
@@ -52,7 +51,7 @@ constructor(private val firebaseAuth: FirebaseAuth, private val userRepository: 
       val user = User(result.user?.uid, email, firstname, lastname, nickname)
       userRepository.merge(user)
 
-      return AuthResource.Success(result.user!!)
+      AuthResource.Success(result.user!!)
     } catch (e: Exception) {
       e.printStackTrace()
       AuthResource.Failure(e)

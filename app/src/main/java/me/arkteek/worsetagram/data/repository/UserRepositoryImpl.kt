@@ -19,50 +19,35 @@ constructor(
   private val database: FirebaseFirestore,
   private val authRepository: Provider<AuthRepository>,
 ) : UserRepository {
+
   override val user: Flow<FirebaseUser?>
     get() = authRepository.get().user
 
   override suspend fun get(id: String): Flow<User?> = flow {
     val userDocument = database.collection(COLLECTION_USERS).document(id).get().await()
-    val user = userDocument.toObject(User::class.java)
-    emit(user)
+    emit(userDocument.toObject(User::class.java))
   }
 
   override suspend fun search(query: String): List<User> {
     val capitalizedQuery = query.capitalize()
+    val nicknameResults = searchByField("nickname", query)
+    if (nicknameResults.isNotEmpty()) return nicknameResults
+
+    val firstnameResults = searchByField("firstname", capitalizedQuery)
+    if (firstnameResults.isNotEmpty()) return firstnameResults
+
+    return searchByField("lastname", capitalizedQuery)
+  }
+
+  private suspend fun searchByField(field: String, query: String): List<User> {
     val result =
       database
-        .collection("users")
-        .orderBy("nickname")
+        .collection(COLLECTION_USERS)
+        .orderBy(field)
         .startAt(query)
-        .endAt(query + "\uf8ff")
+        .endAt("$query\uf8ff")
         .get()
         .await()
-
-    if (result.isEmpty) {
-      val nameResults =
-        database
-          .collection("users")
-          .orderBy("firstname")
-          .startAt(capitalizedQuery)
-          .endAt(capitalizedQuery + "\uf8ff")
-          .get()
-          .await()
-
-      if (nameResults.isEmpty) {
-        return database
-          .collection("users")
-          .orderBy("lastname")
-          .startAt(capitalizedQuery)
-          .endAt(capitalizedQuery + "\uf8ff")
-          .get()
-          .await()
-          .toObjects(User::class.java)
-      }
-
-      return nameResults.toObjects(User::class.java)
-    }
-
     return result.toObjects(User::class.java)
   }
 
@@ -76,28 +61,23 @@ constructor(
   }
 
   override suspend fun follow(currentUserId: String, targetUserId: String) {
-    database
-      .collection(COLLECTION_USERS)
-      .document(currentUserId)
-      .update("following", FieldValue.arrayUnion(targetUserId))
-      .await()
-
-    database
-      .collection(COLLECTION_USERS)
-      .document(targetUserId)
-      .update("followers", FieldValue.arrayUnion(currentUserId))
+    updateUserFollowStatus(currentUserId, targetUserId, FieldValue.arrayUnion(targetUserId))
   }
 
   override suspend fun unfollow(currentUserId: String, targetUserId: String) {
-    database
-      .collection(COLLECTION_USERS)
-      .document(currentUserId)
-      .update("following", FieldValue.arrayRemove(targetUserId))
-      .await()
+    updateUserFollowStatus(currentUserId, targetUserId, FieldValue.arrayRemove(targetUserId))
+  }
 
+  private suspend fun updateUserFollowStatus(
+    userId: String,
+    targetId: String,
+    updateAction: FieldValue,
+  ) {
+    database.collection(COLLECTION_USERS).document(userId).update("following", updateAction).await()
     database
       .collection(COLLECTION_USERS)
-      .document(targetUserId)
-      .update("followers", FieldValue.arrayRemove(currentUserId))
+      .document(targetId)
+      .update("followers", updateAction)
+      .await()
   }
 }

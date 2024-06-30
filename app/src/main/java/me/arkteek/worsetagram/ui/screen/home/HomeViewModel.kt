@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -16,6 +15,7 @@ import me.arkteek.worsetagram.domain.model.PostWithAuthor
 import me.arkteek.worsetagram.domain.model.User
 import me.arkteek.worsetagram.domain.repository.PostRepository
 import me.arkteek.worsetagram.domain.repository.UserRepository
+import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel
@@ -24,7 +24,6 @@ constructor(
   private val userRepository: UserRepository,
   private val postRepository: PostRepository,
 ) : ViewModel() {
-
   private val _authenticatedUser = MutableLiveData<User>()
   val authenticatedUser: LiveData<User> = _authenticatedUser
 
@@ -46,8 +45,8 @@ constructor(
       try {
         _loading.value = true
         userRepository.user.collect { firebaseUser ->
-          if (firebaseUser != null) {
-            val user = userRepository.get(firebaseUser.uid).first()
+          firebaseUser?.let {
+            val user = userRepository.get(it.uid).first()
             _authenticatedUser.value = user!!
           }
         }
@@ -73,7 +72,6 @@ constructor(
             .map { post ->
               val author = userRepository.get(post.authorUID).firstOrNull()
               val comments = getComments(post.uid)
-
               PostWithAuthor(post, author, comments)
             }
             .sortedByDescending { it.post.timestamp }
@@ -82,12 +80,10 @@ constructor(
 
         posts.forEach { post -> _likedPosts[post.uid] = MutableLiveData(false) }
 
-        val currentUser = authenticatedUser.value
-
-        if (currentUser != null) {
+        authenticatedUser.value?.let { currentUser ->
           posts.forEach { post ->
             viewModelScope.launch {
-              val hasLiked = postRepository.hasLikedPost(post.uid, currentUser.uid.toString())
+              val hasLiked = postRepository.hasLikedPost(post.uid, currentUser.uid!!)
               _likedPosts[post.uid]?.postValue(hasLiked)
             }
           }
@@ -107,9 +103,10 @@ constructor(
   fun likePost(postId: String) {
     viewModelScope.launch {
       try {
-        val currentUser = authenticatedUser.value ?: return@launch
-        postRepository.addLike(postId, currentUser.uid.toString())
-        _likedPosts[postId]?.postValue(true)
+        authenticatedUser.value?.let { currentUser ->
+          postRepository.addLike(postId, currentUser.uid!!)
+          _likedPosts[postId]?.postValue(true)
+        }
       } catch (e: Exception) {
         e.printStackTrace()
       }
@@ -119,9 +116,10 @@ constructor(
   fun unlikePost(postId: String) {
     viewModelScope.launch {
       try {
-        val currentUser = authenticatedUser.value ?: return@launch
-        postRepository.removeLike(postId, currentUser.uid.toString())
-        _likedPosts[postId]?.postValue(false)
+        authenticatedUser.value?.let { currentUser ->
+          postRepository.removeLike(postId, currentUser.uid!!)
+          _likedPosts[postId]?.postValue(false)
+        }
       } catch (e: Exception) {
         e.printStackTrace()
       }

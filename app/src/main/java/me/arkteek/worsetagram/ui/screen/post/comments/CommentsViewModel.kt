@@ -20,17 +20,18 @@ import javax.inject.Inject
 @HiltViewModel
 class CommentsViewModel
 @Inject
-constructor(val userRepository: UserRepository, private val postRepository: PostRepository) :
-  ViewModel() {
-
+constructor(
+  private val userRepository: UserRepository,
+  private val postRepository: PostRepository,
+) : ViewModel() {
   private val _authenticatedUser = MutableLiveData<User>()
-  private val authenticatedUser: LiveData<User> = _authenticatedUser
+  val authenticatedUser: LiveData<User> = _authenticatedUser
 
   private val _post = MutableLiveData<Post?>()
   val post: LiveData<Post?> = _post
 
   private val _comments = MutableLiveData<List<Comment>?>()
-  val comments: MutableLiveData<List<Comment>?> = _comments
+  val comments: LiveData<List<Comment>?> = _comments
 
   private val _loading = mutableStateOf(false)
   val loading: State<Boolean> = _loading
@@ -44,8 +45,8 @@ constructor(val userRepository: UserRepository, private val postRepository: Post
       try {
         _loading.value = true
         userRepository.user.collect { firebaseUser ->
-          if (firebaseUser != null) {
-            val user = userRepository.get(firebaseUser.uid).first()
+          firebaseUser?.let {
+            val user = userRepository.get(it.uid).first()
             _authenticatedUser.value = user!!
           }
         }
@@ -63,8 +64,7 @@ constructor(val userRepository: UserRepository, private val postRepository: Post
         _loading.value = true
         val post = postRepository.getPost(postId).firstOrNull()
         _post.value = post
-        val commentsList = post?.comments ?: emptyList()
-        _comments.value = commentsList
+        _comments.value = post?.comments ?: emptyList()
       } catch (e: Exception) {
         e.printStackTrace()
       } finally {
@@ -84,10 +84,7 @@ constructor(val userRepository: UserRepository, private val postRepository: Post
             timestamp = System.currentTimeMillis(),
           )
         postRepository.addComment(postId, comment)
-        val currentComments = _comments.value ?: emptyList()
-        val updatedComments = currentComments.toMutableList()
-        updatedComments.add(comment)
-        _comments.value = updatedComments
+        _comments.value = _comments.value.orEmpty() + comment
       } catch (e: Exception) {
         e.printStackTrace()
       }

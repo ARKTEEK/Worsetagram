@@ -116,7 +116,7 @@ fun SignupScreen(viewModel: AuthViewModel?, navController: NavHostController) {
     )
 
     Button(
-      onClick = { viewModel?.singupUser(firstName, lastName, nickname, email, password) },
+      onClick = { viewModel?.signupUser(firstName, lastName, nickname, email, password) },
       modifier = Modifier.padding(vertical = 16.dp).fillMaxWidth(),
     ) {
       Text(text = "Create Account", style = MaterialTheme.typography.titleMedium)
