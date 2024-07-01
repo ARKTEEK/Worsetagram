@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -73,6 +74,7 @@ fun PostCreationScreen(
     Scaffold(
       topBar = {
         TopAppBar(
+          colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.White),
           title = {},
           navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
@@ -150,12 +152,15 @@ fun PostCreationScreen(
               CreatePostState.Success -> {
                 navController.navigate(ROUTE_HOME)
               }
+
               is CreatePostState.Error -> {
                 Text(text = "Error: ${(createPostState as CreatePostState.Error).message}")
               }
+
               CreatePostState.Loading -> {
                 LoadingScreen()
               }
+
               CreatePostState.Initial -> {}
             }
           }
