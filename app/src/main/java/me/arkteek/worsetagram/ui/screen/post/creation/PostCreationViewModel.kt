@@ -1,8 +1,6 @@
 package me.arkteek.worsetagram.ui.screen.post.creation
 
 import android.net.Uri
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,10 +32,6 @@ constructor(
 
   private val _createPostState = MutableStateFlow<CreatePostState>(CreatePostState.Initial)
   val createPostState: StateFlow<CreatePostState> = _createPostState
-
-  private val _loading = mutableStateOf(false)
-  val loading: State<Boolean> = _loading
-
   init {
     loadAuthenticatedUser()
   }
@@ -45,7 +39,6 @@ constructor(
   private fun loadAuthenticatedUser() {
     viewModelScope.launch {
       try {
-        _loading.value = true
         userRepository.user.collect { firebaseUser ->
           firebaseUser?.let {
             val user = userRepository.get(it.uid).first()
@@ -55,7 +48,6 @@ constructor(
       } catch (e: Exception) {
         e.printStackTrace()
       } finally {
-        _loading.value = false
       }
     }
   }

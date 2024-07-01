@@ -41,38 +41,44 @@ import me.arkteek.worsetagram.domain.model.ChatItem
 import me.arkteek.worsetagram.ui.component.BottomNavigationBar
 import me.arkteek.worsetagram.ui.component.HeaderBar
 import me.arkteek.worsetagram.ui.component.SearchBar
+import me.arkteek.worsetagram.ui.screen.LoadingScreen
 
 @Composable
 fun ChatListScreen(viewModel: ChatViewModel, navController: NavHostController) {
   val currentUser = FirebaseAuth.getInstance().currentUser
   val conversations by viewModel.conversations.collectAsState()
+  val loading = viewModel.loading.value
 
   LaunchedEffect(currentUser?.uid) { currentUser?.uid?.let { viewModel.loadUserConversations(it) } }
 
-  Scaffold(
-    topBar = { HeaderBar(title = "Messages") },
-    bottomBar = { BottomNavigationBar(navController) },
-    content = { paddingValues ->
-      Surface(color = Color.White, modifier = Modifier.padding(paddingValues).fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-          var searchText by remember { mutableStateOf("") }
+  if (loading) {
+    LoadingScreen()
+  } else {
+    Scaffold(
+      topBar = { HeaderBar(title = "Messages") },
+      bottomBar = { BottomNavigationBar(navController) },
+      content = { paddingValues ->
+        Surface(color = Color.White, modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+          Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+            var searchText by remember { mutableStateOf("") }
 
-          SearchBar(
-            searchText = searchText,
-            onSearchTextChanged = { newText -> searchText = newText },
-          )
+            SearchBar(
+              searchText = searchText,
+              onSearchTextChanged = { newText -> searchText = newText },
+            )
 
-          if (conversations.isEmpty()) {
-            Text("No conversations available", modifier = Modifier.padding(16.dp))
-          } else {
-            ChatsTab(chats = conversations) { chatItem ->
-              navController.navigate("chat/${chatItem.chatId}/${chatItem.otherUserId}")
+            if (conversations.isEmpty()) {
+              Text("No conversations available", modifier = Modifier.padding(16.dp))
+            } else {
+              ChatsTab(chats = conversations) { chatItem ->
+                navController.navigate("chat/${chatItem.chatId}/${chatItem.otherUserId}")
+              }
             }
           }
         }
-      }
-    },
-  )
+      },
+    )
+  }
 }
 
 @Composable

@@ -47,6 +47,7 @@ import me.arkteek.worsetagram.R
 import me.arkteek.worsetagram.common.utilities.getTimeDifference
 import me.arkteek.worsetagram.domain.model.Comment
 import me.arkteek.worsetagram.ui.component.HeaderBar
+import me.arkteek.worsetagram.ui.screen.LoadingScreen
 
 @Composable
 fun CommentScreen(
@@ -57,69 +58,77 @@ fun CommentScreen(
   val keyboardController = LocalSoftwareKeyboardController.current
   val comments by viewModel.comments.observeAsState(emptyList())
   var commentInputText by remember { mutableStateOf("") }
+  val loading = viewModel.loading.value
 
   LaunchedEffect(postId) { viewModel.loadPost(postId) }
 
-  Scaffold(
-    topBar = {
-      HeaderBar(
-        title = "Post",
-        leftActions =
-          listOf {
-            IconButton(onClick = { navController.popBackStack() }) {
-              Icon(
-                painter = painterResource(R.drawable.ic_back),
-                contentDescription = "Back Icon",
-                modifier = Modifier.size(24.dp),
+  if (loading) {
+    LoadingScreen()
+  } else {
+    Scaffold(
+      topBar = {
+        HeaderBar(
+          title = "Post",
+          leftActions =
+            listOf {
+              IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                  painter = painterResource(R.drawable.ic_back),
+                  contentDescription = "Back Icon",
+                  modifier = Modifier.size(24.dp),
+                )
+              }
+            },
+        )
+      },
+      content = { paddingValues ->
+        Surface(color = Color.White, modifier = Modifier.fillMaxSize()) {
+          Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+            LazyColumn(modifier = Modifier.weight(1f)) {
+              items(comments!!.size) { index ->
+                val comment = comments!![index]
+                CommentItem(viewModel, comment)
+                HorizontalDivider()
+              }
+            }
+            HorizontalDivider()
+            Row(
+              modifier = Modifier.fillMaxWidth(),
+              verticalAlignment = Alignment.CenterVertically,
+            ) {
+              TextField(
+                value = commentInputText,
+                onValueChange = { commentInputText = it },
+                placeholder = { Text("What are your thoughts?", color = Color.Gray) },
+                modifier =
+                  Modifier.fillMaxWidth()
+                    .background(Color.Transparent)
+                    .weight(1f)
+                    .width(IntrinsicSize.Max),
+                colors =
+                  TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                  ),
+              )
+              Text(
+                text = "Post",
+                color = Color.Blue,
+                modifier =
+                  Modifier.padding(8.dp).clickable {
+                    viewModel.addComment(commentInputText)
+                    commentInputText = ""
+                    keyboardController?.hide()
+                  },
               )
             }
-          },
-      )
-    },
-    content = { paddingValues ->
-      Surface(color = Color.White, modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
-          LazyColumn(modifier = Modifier.weight(1f)) {
-            items(comments!!.size) { index ->
-              val comment = comments!![index]
-              CommentItem(viewModel, comment)
-              HorizontalDivider()
-            }
-          }
-          HorizontalDivider()
-          Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            TextField(
-              value = commentInputText,
-              onValueChange = { commentInputText = it },
-              placeholder = { Text("What are your thoughts?", color = Color.Gray) },
-              modifier =
-                Modifier.fillMaxWidth()
-                  .background(Color.Transparent)
-                  .weight(1f)
-                  .width(IntrinsicSize.Max),
-              colors =
-                TextFieldDefaults.colors(
-                  focusedContainerColor = Color.Transparent,
-                  unfocusedContainerColor = Color.Transparent,
-                  focusedIndicatorColor = Color.Transparent,
-                  unfocusedIndicatorColor = Color.Transparent,
-                ),
-            )
-            Text(
-              text = "Post",
-              color = Color.Blue,
-              modifier =
-                Modifier.padding(8.dp).clickable {
-                  viewModel.addComment(commentInputText)
-                  commentInputText = ""
-                  keyboardController?.hide()
-                },
-            )
           }
         }
-      }
-    },
-  )
+      },
+    )
+  }
 }
 
 @Composable

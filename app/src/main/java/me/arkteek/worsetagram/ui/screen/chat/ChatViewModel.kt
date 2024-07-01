@@ -1,5 +1,7 @@
 package me.arkteek.worsetagram.ui.screen.chat
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -32,6 +34,9 @@ constructor(
   private val _document = MutableStateFlow<DocumentSnapshot?>(null)
   private val document: StateFlow<DocumentSnapshot?> = _document
 
+  private val _loading = mutableStateOf(false)
+  val loading: State<Boolean> = _loading
+
   fun createConversationIfNotExists(chatId: String, users: List<String>) {
     viewModelScope.launch { chatRepository.createConversationIfNotExists(chatId, users) }
   }
@@ -58,7 +63,11 @@ constructor(
   }
 
   fun loadUserConversations(userId: String) {
-    viewModelScope.launch { _conversations.value = chatRepository.loadUserConversations(userId) }
+    viewModelScope.launch {
+      _loading.value = true
+      _conversations.value = chatRepository.loadUserConversations(userId)
+      _loading.value = false
+    }
   }
 
   fun findDocument(chatId: String, users: List<String> = emptyList()) {

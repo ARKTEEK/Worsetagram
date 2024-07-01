@@ -145,7 +145,7 @@ fun SignupScreen(viewModel: AuthViewModel?, navController: NavHostController) {
         }
         is AuthResource.Success -> {
           LaunchedEffect(Unit) {
-            navController.navigate(ROUTE_HOME) { popUpTo(ROUTE_SIGNUP) { inclusive = true } }
+            navController.navigate(ROUTE_HOME)
           }
         }
       }
